@@ -1,0 +1,57 @@
+
+> build
+> vite build
+
+X [ERROR] "@vitejs/plugin-vue" resolved to an ESM file. ESM file cannot be loaded by `require`. See http://vitejs.dev/guide/troubleshooting.html#this-package-is-esm-only for more details. [plugin externalize-deps]
+
+    node_modules/esbuild/lib/main.js:1373:27:
+      1373 Γöé         let result = await callback({
+           Γò╡                            ^
+
+    at file:///C:/laragon/www/khatma/node_modules/vite/dist/node/chunks/dep-827b23df.js:66612:35
+    at requestCallbacks.on-resolve (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1373:28)
+    at handleRequest (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:729:19)
+    at handleIncomingPacket (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:755:7)
+    at Socket.readFromStdout (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:679:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    node_modules/esbuild/lib/main.js:1292:20:
+      1292 Γöé       let promise = setup({
+           Γò╡                     ^
+
+    at setup (file:///C:/laragon/www/khatma/node_modules/vite/dist/node/chunks/dep-827b23df.js:66578:27)
+    at handlePlugins (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1292:21)
+    at buildOrContextImpl (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:978:5)
+    at Object.buildOrContext (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:786:5)
+    at C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:2177:15
+    at new Promise (<anonymous>)
+    at Object.build (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:2176:25)
+    at build (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:2025:51)
+    at bundleConfigFile (file:///C:/laragon/www/khatma/node_modules/vite/dist/node/chunks/dep-827b23df.js:66529:26)
+
+  The plugin "externalize-deps" was triggered by this import
+
+    vite.config.js:3:16:
+      3 Γöé import vue from '@vitejs/plugin-vue';
+        Γò╡                 ~~~~~~~~~~~~~~~~~~~~
+
+failed to load config from C:\laragon\www\khatma\vite.config.js
+error during build:
+Error: Build failed with 1 error:
+node_modules/esbuild/lib/main.js:1373:27: ERROR: [plugin: externalize-deps] "@vitejs/plugin-vue" resolved to an ESM file. ESM file cannot be loaded by `require`. See http://vitejs.dev/guide/troubleshooting.html#this-package-is-esm-only for more details.
+    at failureErrorWithLog (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1649:15)
+    at C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1058:25
+    at runOnEndCallbacks (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1484:45)
+    at buildResponseToResult (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1056:7)
+    at C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1085:16
+    at responseCallbacks.<computed> (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:703:9)
+    at handleIncomingPacket (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:762:9)
+    at Socket.readFromStdout (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:679:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)

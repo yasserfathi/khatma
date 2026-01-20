@@ -1,0 +1,45 @@
+
+> build
+> vite build
+
+[36mvite v4.5.14 [32mbuilding for production...[36m[39m
+transforming...
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+[32mΓ£ô[39m 182 modules transformed.
+rendering chunks...
+[vite:esbuild-transpile] Transform failed with 1 error:
+assets/app-!~{002}~.js:14902:10: ERROR: Top-level await is not available in the configured target environment ("chrome87", "edge88", "es2020", "firefox78", "safari14" + 3 overrides)
+
+Top-level await is not available in the configured target environment ("chrome87", "edge88", "es2020", "firefox78", "safari14" + 3 overrides)
+14900|  app.use(Quasar, {
+14901|      plugins: {}, // import Quasar plugins and add here
+14902|      lang: await __vitePreload(() => import('./ar-!~{008}~.js'),true?"__VITE_PRELOAD__":void 0), // Arabic support
+   |            ^
+14903|      config: {
+14904|          // Quasar config
+
+[32mΓ£ô built in 2.92s[39m
+error during build:
+Error: Transform failed with 1 error:
+assets/app-!~{002}~.js:14902:10: ERROR: Top-level await is not available in the configured target environment ("chrome87", "edge88", "es2020", "firefox78", "safari14" + 3 overrides)
+    at failureErrorWithLog (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:1649:15)
+    at C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:847:29
+    at responseCallbacks.<computed> (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:703:9)
+    at handleIncomingPacket (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:762:9)
+    at Socket.readFromStdout (C:\laragon\www\khatma\node_modules\esbuild\lib\main.js:679:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
