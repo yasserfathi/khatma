@@ -38,4 +38,24 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out successfully']);
     }
+
+    public function changePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!\Illuminate\Support\Facades\Hash::check($validated['current_password'], $user->password)) {
+            return response()->json(['message' => 'كلمة المرور الحالية غير صحيحة'], 422);
+        }
+
+        $user->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['new_password'])
+        ]);
+
+        return response()->json(['message' => 'تم تغيير كلمة المرور بنجاح']);
+    }
 }

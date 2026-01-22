@@ -14,6 +14,7 @@ class KhatmaAssignment extends Model
 
     protected $casts = [
         'parts' => 'array',
+        'read' => 'boolean',
     ];
 
     public function khatma()

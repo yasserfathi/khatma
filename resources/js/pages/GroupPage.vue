@@ -76,6 +76,14 @@
               </template>
             </q-input>
 
+            <q-select filled dense v-model="form.type" :options="typeOptions" option-value="value" option-label="label"
+              emit-value map-options label="نوع المجموعة" color="primary" bg-color="grey-1" class="rounded-borders"
+              :rules="[val => !!val || 'يرجى اختيار النوع']">
+              <template v-slot:prepend>
+                <q-icon name="category" color="primary" />
+              </template>
+            </q-select>
+
             <q-item tag="label" class="bg-grey-1 rounded-borders q-pa-md border-primary-1" v-ripple>
               <q-item-section avatar>
                 <q-icon name="toggle_on" color="primary" size="md" v-if="form.active" />
@@ -113,10 +121,16 @@ const groups = ref([])
 const loading = ref(false)
 const dialogVisible = ref(false)
 const isEditing = ref(false)
-const form = ref({ id: null, name: '', active: true })
+const form = ref({ id: null, name: '', active: true, type: 'tilawa' })
+
+const typeOptions = [
+  { label: 'تلاوة', value: 'tilawa' },
+  { label: 'ذكر', value: 'zikr' }
+]
 
 const columns = [
   { name: 'name', label: 'اسم المجموعة', field: 'name', sortable: true, align: 'left' },
+  { name: 'type', label: 'النوع', field: row => row.type === 'zikr' ? 'ذكر' : 'تلاوة', sortable: true, align: 'center' },
   { name: 'active', label: 'الحالة', field: 'active', sortable: true, align: 'center', style: 'width: 150px' },
   { name: 'actions', label: 'الإجراءات', field: 'actions', align: 'center', style: 'width: 150px' }
 ]
@@ -128,10 +142,11 @@ const fetchGroups = async () => {
     groups.value = response.data
   } catch (error) {
     console.error('Error fetching groups:', error)
+    const message = error.response?.data?.message || error.message || 'فشل تحميل المجموعات'
     Swal.fire({
       icon: 'error',
       title: 'فشل التحميل',
-      text: 'فشل تحميل المجموعات'
+      text: message
     })
   } finally {
     loading.value = false
@@ -140,13 +155,13 @@ const fetchGroups = async () => {
 
 const openCreateDialog = () => {
   isEditing.value = false
-  form.value = { id: null, name: '', active: true }
+  form.value = { id: null, name: '', active: true, type: 'tilawa' }
   dialogVisible.value = true
 }
 
 const editGroup = (group) => {
   isEditing.value = true
-  form.value = { ...group, active: !!group.active }
+  form.value = { ...group, active: !!group.active, type: group.type || 'tilawa' }
   dialogVisible.value = true
 }
 

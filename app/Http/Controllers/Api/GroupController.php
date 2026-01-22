@@ -11,9 +11,26 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Group::all();
+        try {
+            $user = $request->user();
+            $query = Group::query();
+
+            // Cast role to int to be safe
+            if ($user && (int) $user->role === \App\Models\User::ROLE_ADMIN) {
+                $query->where('created_by', $user->id);
+            }
+
+            if ($request->has('type')) {
+                $query->where('type', $request->type);
+            }
+
+            return $query->get();
+        } catch (\Exception $e) {
+            file_put_contents(public_path('debug.txt'), $e->getMessage() . "\n" . $e->getTraceAsString());
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -24,7 +41,16 @@ class GroupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:groups,name',
             'active' => 'boolean',
+            'type' => 'nullable|string|in:tilawa,zikr',
         ]);
+
+        if (!isset($validated['type'])) {
+            $validated['type'] = 'tilawa';
+        }
+
+        if ($request->user()) {
+            $validated['created_by'] = $request->user()->id;
+        }
 
         $group = Group::create($validated);
 
@@ -34,8 +60,14 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show(Request $request, Group $group)
     {
+        $user = $request->user();
+        if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
+            if ($group->created_by !== $user->id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        }
         return $group;
     }
 
@@ -44,9 +76,17 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
+        $user = $request->user();
+        if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
+            if ($group->created_by !== $user->id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        }
+
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255|unique:groups,name,' . $group->id,
             'active' => 'boolean',
+            'type' => 'nullable|string|in:tilawa,zikr',
         ]);
 
         $group->update($validated);
@@ -57,8 +97,15 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy(Request $request, Group $group)
     {
+        $user = $request->user();
+        if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
+            if ($group->created_by !== $user->id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        }
+
         $group->delete();
 
         return response()->json(null, 204);

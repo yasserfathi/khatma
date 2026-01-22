@@ -14,12 +14,14 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <q-tooltip>حسابي</q-tooltip>
+          <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode">
+            <q-tooltip>الوضع الليلي</q-tooltip>
           </q-btn>
+
+          <div v-if="userName" class="text-subtitle1 text-grey-8 q-mx-sm">
+            مرحباً {{ userName }}
+          </div>
+
           <q-btn outline color="primary" label="تسجيل الخروج" icon="logout" @click="logout" class="q-ml-sm" />
         </div>
       </q-toolbar>
@@ -33,22 +35,20 @@
               <q-icon color="grey-8" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label class="sidebar-label">{{ link.text }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-separator class="q-my-md" />
 
-          <q-item v-for="link in links2" :key="link.text" clickable v-ripple>
+          <q-item clickable v-ripple to="/change-password">
             <q-item-section avatar>
-              <q-icon color="grey-8" :name="link.icon" />
+              <q-icon color="grey-8" name="lock" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label class="sidebar-label">تغيير كلمة المرور</q-item-label>
             </q-item-section>
           </q-item>
-
-          <q-separator class="q-my-md" />
 
         </q-list>
       </q-scroll-area>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import axios from 'axios'
@@ -70,6 +70,20 @@ const router = useRouter()
 const $q = useQuasar()
 const leftDrawerOpen = ref(false)
 const search = ref('')
+const userName = ref('')
+
+const toggleDarkMode = () => {
+  $q.dark.toggle()
+}
+
+const fetchUser = async () => {
+  try {
+    const response = await axios.get('/api/user')
+    userName.value = response.data.name
+  } catch (error) {
+    console.error('Error fetching user', error)
+  }
+}
 
 const logout = async () => {
   try {
@@ -79,8 +93,9 @@ const logout = async () => {
   } finally {
     // Always cleanup on logout
     localStorage.removeItem('auth_token')
+    localStorage.removeItem('user_data')
     delete axios.defaults.headers.common['Authorization']
-    $q.notify({ type: 'positive', message: 'تم تسجيل الخروج بنجاح' })
+    $q.notify({ color: 'primary', icon: 'check_circle', message: 'تم تسجيل الخروج بنجاح' })
     router.push('/')
   }
 }
@@ -89,18 +104,17 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
+onMounted(() => {
+  fetchUser()
+})
+
 const links1 = [
   { icon: 'home', text: 'الرئيسية', to: '/app' },
-  { icon: 'group', text: 'المجموعات', to: '/group' },
+  { icon: 'group', text: 'مجموعات الواتساب', to: '/group' },
+  { icon: 'group', text: 'مجموعات القراءة', to: '/group-reading' },
   { icon: 'person', text: 'المستخدمين', to: '/user' },
-  { icon: 'menu_book', text: 'الختمات', to: '/khatma' },
-]
-
-const links2 = [
-  { icon: 'folder', text: 'المكتبة' },
-  { icon: 'restore', text: 'السجل' },
-  { icon: 'watch_later', text: 'مشاهدة لاحقاً' },
-  { icon: 'thumb_up_alt', text: 'أعجبتني' }
+  { icon: 'menu_book', text: 'ختمة تلاوة جديدة', to: '/khatma-tilawa' },
+  { icon: 'menu_book', text: 'ختمة ذكر جديدة', to: '/khatma-zikr' },
 ]
 
 </script>

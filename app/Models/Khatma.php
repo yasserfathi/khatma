@@ -10,12 +10,7 @@ class Khatma extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'group_id',
-        'khatma_no',
-        'people_group_no',
-        'description',
-    ];
+    protected $fillable = ['group_id', 'khatma_no', 'people_group_no', 'description', 'hijri_date', 'juz_count', 'deleted_at'];
 
     public function group()
     {

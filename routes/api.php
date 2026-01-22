@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\KhatmaAssignmentController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KhatmaController;
+use App\Http\Controllers\Api\GroupReadingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +24,13 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::apiResource('groups', GroupController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('khatmas', KhatmaController::class);
+    Route::apiResource('khatma-assignments', KhatmaAssignmentController::class);
+    Route::apiResource('group-readings', GroupReadingController::class);
 });

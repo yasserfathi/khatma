@@ -12,7 +12,10 @@ const routes = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: '/group', component: () => import('pages/GroupPage.vue') },
       { path: '/user', component: () => import('pages/UserPage.vue') },
-      { path: '/khatma', component: () => import('pages/KhatmaPage.vue') }
+      { path: '/khatma-tilawa', component: () => import('pages/KhatmaTilawaPage.vue') },
+      { path: '/khatma-tilawa/:id/assign', component: () => import('pages/AssignPage.vue') },
+      { path: '/group-reading', component: () => import('pages/GroupReadingPage.vue') },
+      { path: '/change-password', component: () => import('pages/ChangePasswordPage.vue') }
     ],
   },
 

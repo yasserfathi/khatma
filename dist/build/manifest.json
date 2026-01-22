@@ -1,0 +1,314 @@
+{
+  "_QBadge-7ac72906.js": {
+    "file": "assets/QBadge-7ac72906.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QForm-f985544d.js": {
+    "file": "assets/QForm-f985544d.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QLayout-4c45bd9c.js": {
+    "file": "assets/QLayout-4c45bd9c.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QLinearProgress-5814a24c.js": {
+    "file": "assets/QLinearProgress-5814a24c.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QPage-fd16ef0c.js": {
+    "file": "assets/QPage-fd16ef0c.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "__plugin-vue_export-helper-c27b6911.js": {
+    "file": "assets/_plugin-vue_export-helper-c27b6911.js"
+  },
+  "_format-8df1824e.js": {
+    "file": "assets/format-8df1824e.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_sweetalert2.esm.all-656f7692.js": {
+    "file": "assets/sweetalert2.esm.all-656f7692.js",
+    "imports": [
+      "resources/js/app.js",
+      "_format-8df1824e.js",
+      "_QLinearProgress-5814a24c.js"
+    ]
+  },
+  "_use-quasar-0c9a0e78.js": {
+    "file": "assets/use-quasar-0c9a0e78.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-808443ae.ttf",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-brands-400.ttf"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-d7236a19.woff2",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-brands-400.woff2"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-54cf6086.ttf",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-regular-400.ttf"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-e3456d12.woff2",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-regular-400.woff2"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-d2f05935.ttf",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-solid-900.ttf"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-aa759986.woff2",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-solid-900.woff2"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-30f6abf6.ttf",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-v4compatibility.ttf"
+  },
+  "node_modules/@quasar/extras/fontawesome-v6/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-0ce9033c.woff2",
+    "src": "node_modules/@quasar/extras/fontawesome-v6/fa-v4compatibility.woff2"
+  },
+  "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNa.woff": {
+    "file": "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNa-fd84f88b.woff",
+    "src": "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNa.woff"
+  },
+  "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2": {
+    "file": "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ-4a4dbc62.woff2",
+    "src": "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2"
+  },
+  "node_modules/@quasar/extras/mdi-v7/materialdesignicons-webfont.woff": {
+    "file": "assets/materialdesignicons-webfont-a5928a0d.woff",
+    "src": "node_modules/@quasar/extras/mdi-v7/materialdesignicons-webfont.woff"
+  },
+  "node_modules/@quasar/extras/mdi-v7/materialdesignicons-webfont.woff2": {
+    "file": "assets/materialdesignicons-webfont-662fefa8.woff2",
+    "src": "node_modules/@quasar/extras/mdi-v7/materialdesignicons-webfont.woff2"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiAw-21d7671f.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiAw.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuZtalmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuZtalmUiAw-1a33b99d.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuZtalmUiAw.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabVmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabVmUiAw-6abe435f.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabVmUiAw.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bVmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bVmUiAw-2655782c.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bVmUiAw.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbFmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbFmUiAw-b396c4b4.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbFmUiAw.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiAw.woff": {
+    "file": "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiAw-c46b1797.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiAw.woff"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-95292eed.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.js": {
+    "assets": [
+      "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ-4a4dbc62.woff2",
+      "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNa-fd84f88b.woff",
+      "assets/materialdesignicons-webfont-662fefa8.woff2",
+      "assets/materialdesignicons-webfont-a5928a0d.woff",
+      "assets/fa-brands-400-d7236a19.woff2",
+      "assets/fa-brands-400-808443ae.ttf",
+      "assets/fa-regular-400-e3456d12.woff2",
+      "assets/fa-regular-400-54cf6086.ttf",
+      "assets/fa-solid-900-aa759986.woff2",
+      "assets/fa-solid-900-d2f05935.ttf",
+      "assets/fa-v4compatibility-0ce9033c.woff2",
+      "assets/fa-v4compatibility-30f6abf6.ttf",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbFmUiAw-b396c4b4.woff",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabVmUiAw-6abe435f.woff",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiAw-c46b1797.woff",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bVmUiAw-2655782c.woff",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiAw-21d7671f.woff",
+      "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuZtalmUiAw-1a33b99d.woff"
+    ],
+    "css": [
+      "assets/app-95292eed.css"
+    ],
+    "dynamicImports": [
+      "resources/js/layouts/AuthLayout.vue",
+      "resources/js/pages/LoginPage.vue",
+      "resources/js/layouts/MainLayout.vue",
+      "resources/js/pages/IndexPage.vue",
+      "resources/js/pages/GroupPage.vue",
+      "resources/js/pages/UserPage.vue",
+      "resources/js/pages/KhatmaPage.vue",
+      "resources/js/pages/ErrorNotFound.vue"
+    ],
+    "file": "assets/app-d75ee512.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/assets/islamic_bg_v4.png": {
+    "file": "assets/islamic_bg_v4-9e6cb946.png",
+    "src": "resources/js/assets/islamic_bg_v4.png"
+  },
+  "resources/js/layouts/AuthLayout.vue": {
+    "file": "assets/AuthLayout-fc2e2799.js",
+    "imports": [
+      "_QLayout-4c45bd9c.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/layouts/AuthLayout.vue"
+  },
+  "resources/js/layouts/MainLayout.vue": {
+    "file": "assets/MainLayout-0dc4f5c2.js",
+    "imports": [
+      "resources/js/app.js",
+      "_format-8df1824e.js",
+      "_QLayout-4c45bd9c.js",
+      "_use-quasar-0c9a0e78.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/layouts/MainLayout.vue"
+  },
+  "resources/js/pages/ErrorNotFound.vue": {
+    "file": "assets/ErrorNotFound-0d4f37d7.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/ErrorNotFound.vue"
+  },
+  "resources/js/pages/GroupPage.css": {
+    "file": "assets/GroupPage-839bb1a9.css",
+    "src": "resources/js/pages/GroupPage.css"
+  },
+  "resources/js/pages/GroupPage.vue": {
+    "css": [
+      "assets/GroupPage-839bb1a9.css"
+    ],
+    "file": "assets/GroupPage-9e581cb5.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QBadge-7ac72906.js",
+      "_sweetalert2.esm.all-656f7692.js",
+      "_format-8df1824e.js",
+      "_QForm-f985544d.js",
+      "_QPage-fd16ef0c.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_QLinearProgress-5814a24c.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/GroupPage.vue"
+  },
+  "resources/js/pages/IndexPage.css": {
+    "file": "assets/IndexPage-1a4040d3.css",
+    "src": "resources/js/pages/IndexPage.css"
+  },
+  "resources/js/pages/IndexPage.vue": {
+    "css": [
+      "assets/IndexPage-1a4040d3.css"
+    ],
+    "file": "assets/IndexPage-19e0dbd0.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QLinearProgress-5814a24c.js",
+      "_QBadge-7ac72906.js",
+      "_QPage-fd16ef0c.js",
+      "__plugin-vue_export-helper-c27b6911.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/IndexPage.vue"
+  },
+  "resources/js/pages/KhatmaPage.css": {
+    "file": "assets/KhatmaPage-1aa08413.css",
+    "src": "resources/js/pages/KhatmaPage.css"
+  },
+  "resources/js/pages/KhatmaPage.vue": {
+    "css": [
+      "assets/KhatmaPage-1aa08413.css"
+    ],
+    "file": "assets/KhatmaPage-4b74f34d.js",
+    "imports": [
+      "resources/js/app.js",
+      "_sweetalert2.esm.all-656f7692.js",
+      "_format-8df1824e.js",
+      "_QForm-f985544d.js",
+      "_QPage-fd16ef0c.js",
+      "_use-quasar-0c9a0e78.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_QLinearProgress-5814a24c.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/KhatmaPage.vue"
+  },
+  "resources/js/pages/LoginPage.css": {
+    "file": "assets/LoginPage-4680b4bb.css",
+    "src": "resources/js/pages/LoginPage.css"
+  },
+  "resources/js/pages/LoginPage.vue": {
+    "assets": [
+      "assets/islamic_bg_v4-9e6cb946.png"
+    ],
+    "css": [
+      "assets/LoginPage-4680b4bb.css"
+    ],
+    "file": "assets/LoginPage-5f842e81.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QForm-f985544d.js",
+      "_QPage-fd16ef0c.js",
+      "_use-quasar-0c9a0e78.js",
+      "__plugin-vue_export-helper-c27b6911.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/LoginPage.vue"
+  },
+  "resources/js/pages/UserPage.css": {
+    "file": "assets/UserPage-a40c2aad.css",
+    "src": "resources/js/pages/UserPage.css"
+  },
+  "resources/js/pages/UserPage.vue": {
+    "css": [
+      "assets/UserPage-a40c2aad.css"
+    ],
+    "file": "assets/UserPage-738b3616.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QBadge-7ac72906.js",
+      "_sweetalert2.esm.all-656f7692.js",
+      "_format-8df1824e.js",
+      "_QForm-f985544d.js",
+      "_QPage-fd16ef0c.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_QLinearProgress-5814a24c.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/UserPage.vue"
+  }
+}

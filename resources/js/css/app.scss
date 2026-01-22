@@ -69,3 +69,85 @@ body {
 .swal2-container {
   z-index: 100000 !important;
 }
+
+// Global Dark Mode Overrides
+body.body--dark {
+  background: #121212;
+  color: #e0e0e0;
+
+  .q-layout {
+    background: #121212 !important;
+  }
+
+  .text-grey-8 {
+    color: #b0b0b0 !important;
+  }
+
+  .text-primary {
+    color: #80cbc4 !important; // Lighter teal for dark mode
+  }
+  
+  .bg-primary {
+      background: #004d40 !important; // Darker teal base
+  }
+
+  .bg-teal-1 {
+    background: rgba(0, 150, 136, 0.15) !important;
+  }
+  
+  .text-teal {
+    color: #80cbc4 !important;
+  }
+  
+  .text-teal-9 {
+     color: #b2dfdb !important;
+  }
+  
+  .text-teal-2 {
+      color: #b2dfdb !important;
+  }
+  
+  .bg-grey-1 {
+      background: #121212 !important;
+  }
+  
+  // Glassmorphism Dark
+  .glass-header {
+      background: rgba(30, 30, 30, 0.9) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .glass-drawer {
+      background: rgba(30, 30, 30, 0.9) !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.05); 
+      
+      .q-item {
+          color: #e0e0e0;
+          &:hover {
+              background: rgba(255,255,255,0.05);
+          }
+      }
+      
+       .q-item.q-router-link--active {
+          color: #80cbc4;
+          background: rgba(128, 203, 196, 0.15);
+      }
+  }
+  
+  .glass-card {
+      background: rgba(30, 30, 30, 0.7) !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      color: #e0e0e0;
+  }
+
+  // Quasar Overrides
+  .q-card {
+      background: #1e1e1e;
+      color: #fff;
+  }
+  
+  .q-menu, .q-dialog__inner > div {
+       background: #1e1e1e;
+       color: #fff;
+  }
+}

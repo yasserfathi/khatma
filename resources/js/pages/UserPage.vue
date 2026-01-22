@@ -94,7 +94,7 @@
                         </q-input>
 
                         <q-input filled dense v-model="form.phone" label="رقم الهاتف" color="primary" bg-color="grey-1"
-                            class="rounded-borders">
+                            class="rounded-borders" :rules="[val => !!val || 'يرجى إدخال رقم الهاتف']">
                             <template v-slot:prepend>
                                 <q-icon name="phone" color="primary" />
                             </template>
@@ -103,18 +103,13 @@
                         <q-select filled dense v-model="form.group_numbers" label="أرقام المجموعات"
                             :options="groupOptions" option-value="id" option-label="name" multiple counter
                             max-values="10" emit-value map-options use-chips color="primary" bg-color="grey-1"
-                            class="rounded-borders">
+                            class="rounded-borders"
+                            :rules="[val => val && val.length > 0 || 'يرجى اختيار مجموعة واحدة على الأقل']">
                             <template v-slot:prepend>
                                 <q-icon name="list_alt" color="primary" />
                             </template>
                         </q-select>
-                        <q-input v-if="!isEditing" filled dense v-model="form.password" label="كلمة المرور"
-                            type="password" color="primary" bg-color="grey-1" class="rounded-borders"
-                            :rules="[val => !!val || 'يرجى إدخال كلمة المرور']">
-                            <template v-slot:prepend>
-                                <q-icon name="lock" color="primary" />
-                            </template>
-                        </q-input>
+
 
                         <q-item tag="label" class="bg-grey-1 rounded-borders q-pa-md border-primary-1" v-ripple>
                             <q-item-section avatar>

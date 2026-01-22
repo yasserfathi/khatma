@@ -181,7 +181,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .glass-card {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
@@ -191,6 +191,9 @@ onMounted(() => {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s;
 }
+
+// Dark Mode Overrides
+
 
 .glass-card:hover {
   transform: translateY(-4px);

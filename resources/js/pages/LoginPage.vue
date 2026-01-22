@@ -68,7 +68,7 @@ const handleLogin = async () => {
     // Configure axios defaults for subsequent requests
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-    $q.notify({ type: 'positive', message: 'تم تسجيل الدخول بنجاح' })
+    $q.notify({ color: 'primary', icon: 'check_circle', message: 'تم تسجيل الدخول بنجاح' })
     router.push('/app')
 
   } catch (error) {

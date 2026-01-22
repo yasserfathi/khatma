@@ -5,7 +5,7 @@
             <div class="row items-center q-gutter-x-md">
                 <q-btn round flat color="primary" icon="arrow_forward" to="/app" />
                 <div>
-                    <div class="text-h4 text-primary text-weight-bold text-islamic">ختمة</div>
+                    <div class="text-h4 text-primary text-weight-bold text-islamic">ختمة تلاوة</div>
                     <div class="text-subtitle2 text-grey-7">جداول الختمات والمجموعات</div>
                 </div>
             </div>
@@ -26,14 +26,18 @@
 
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" auto-width>
-                        <div class="row justify-center q-gutter-x-sm">
+                        <div class="row justify-center q-gutter-x-sm no-wrap">
                             <q-btn flat round color="teal-7" icon="content_copy" size="sm" class="bg-teal-1 action-btn"
                                 @click="copyDescription(props.row)">
                                 <q-tooltip>نسخ الوصف</q-tooltip>
                             </q-btn>
-                            <q-btn flat round color="green-7" icon="fa-brands fa-whatsapp" size="sm"
-                                class="bg-green-1 action-btn" @click="shareWhatsapp(props.row)">
+                            <q-btn flat round color="teal-7" icon="fa-brands fa-whatsapp" size="sm"
+                                class="bg-teal-1 action-btn" @click="shareWhatsapp(props.row)">
                                 <q-tooltip>مشاركة عبر واتساب</q-tooltip>
+                            </q-btn>
+                            <q-btn flat round color="deep-purple-7" icon="assignment_ind" size="sm"
+                                class="bg-deep-purple-1 action-btn" :to="`/khatma-tilawa/${props.row.id}/assign`">
+                                <q-tooltip>توزيع الأجزاء</q-tooltip>
                             </q-btn>
                             <q-btn flat round color="primary-7" icon="edit" size="sm" class="bg-primary-1 action-btn"
                                 @click="editKhatma(props.row)">
@@ -42,6 +46,10 @@
                             <q-btn flat round color="red-7" icon="delete" size="sm" class="bg-red-1 action-btn"
                                 @click="confirmDelete(props.row)">
                                 <q-tooltip>حذف</q-tooltip>
+                            </q-btn>
+                            <q-btn flat round color="pink-7" icon="local_florist" size="sm" class="bg-pink-1 action-btn"
+                                @click="generateRoseImage(props.row)">
+                                <q-tooltip>توليد صورة الوردة</q-tooltip>
                             </q-btn>
                         </div>
                     </q-td>
@@ -60,9 +68,89 @@
         <div id="capture-container"
             style="position: fixed; left: -9999px; top: 0; width: 600px; background: white; z-index: -1;"></div>
 
+        <!-- Hidden Rose Capture Container -->
+        <div id="rose-capture-container" dir="rtl"
+            style="position: fixed; left: 0; top: 0; width: 600px; background: #FFCCBC; z-index: -100; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; padding: 20px; border: 1px solid #E64A19;">
+
+            <!-- Header -->
+            <div
+                style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #E64A19; padding-bottom: 10px;">
+                <table style="width: 100%; margin: 5px 0 10px 0;">
+                    <tr>
+                        <td style="text-align: left; width: 50%; padding-right: 10px;">
+                            <span style="font-size: 22px; font-weight: bold; color: #3E2723;">الختمة رقم</span>
+                        </td>
+                        <td style="text-align: right; width: 50%; padding-left: 10px;">
+                            <span dir="ltr"
+                                style="font-size: 22px; font-weight: bold; color: #3E2723; font-family: sans-serif;">({{
+                                    roseData.khatma_no }})</span>
+                        </td>
+                    </tr>
+                </table>
+                <h3 v-if="roseData.group_name"
+                    style="margin: 5px 0; color: #5D4037; font-size: 18px; font-weight: bold; text-decoration: underline;">
+                    المجموعة رقم ({{ roseData.people_group_no || '---' }})
+                </h3>
+                <div v-if="roseData.description_text"
+                    style="font-size: 16px; color: #3E2723; font-weight: bold; margin-top: 5px;">
+                    {{ roseData.description_text }}
+                </div>
+                <div style="text-align: right; margin-top: 10px; color: #BF360C; font-weight: bold; font-size: 16px;">
+                    توزيع الأجزاء للتلاوة
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div style="display: flex; flex-wrap: wrap; margin: 0 -10px;">
+                <!-- Column 1 (Right) -->
+                <div style="width: 50%; padding: 0 10px; box-sizing: border-box;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr v-for="(group, idx) in rightColumnParts" :key="idx">
+                            <td
+                                style="text-align: right; padding: 5px; font-size: 16px; font-weight: bold; color: #3E2723;">
+                                {{ group.userName }}
+                            </td>
+                            <td
+                                style="text-align: left; padding: 5px; font-size: 16px; font-weight: bold; color: #3E2723;">
+                                <div
+                                    style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; direction: ltr;">
+                                    <span v-for="(partNo, pIdx) in group.parts" :key="pIdx">
+                                        {{ partNo }}<span v-if="pIdx < group.parts.length - 1">، </span>
+                                    </span>
+                                    <span v-if="group.reads.every(r => r)" style="margin-left: 2px;">🌹</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Column 2 (Left) -->
+                <div style="width: 50%; padding: 0 10px; box-sizing: border-box; border-right: 1px dashed #E64A19;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr v-for="(group, idx) in leftColumnParts" :key="idx">
+                            <td
+                                style="text-align: right; padding: 5px; font-size: 16px; font-weight: bold; color: #3E2723;">
+                                {{ group.userName }}
+                            </td>
+                            <td
+                                style="text-align: left; padding: 5px; font-size: 16px; font-weight: bold; color: #3E2723;">
+                                <div
+                                    style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; direction: ltr;">
+                                    <span v-for="(partNo, pIdx) in group.parts" :key="pIdx">
+                                        {{ partNo }}<span v-if="pIdx < group.parts.length - 1">، </span>
+                                    </span>
+                                    <span v-if="group.reads.every(r => r)" style="margin-left: 2px;">🌹</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Create/Edit Dialog -->
         <q-dialog v-model="dialogVisible" transition-show="scale" transition-hide="scale" persistent maximized>
-            <q-card class="bg-white shadow-24 overflow-hidden">
+            <q-card class="shadow-24 overflow-hidden">
                 <!-- Dialog Header -->
                 <q-card-section class="bg-primary text-white row items-center q-py-md q-px-lg">
                     <q-avatar icon="menu_book" color="primary-8" text-color="white" size="md" class="q-mr-md" />
@@ -98,6 +186,36 @@
                                 <q-input filled dense v-model="form.people_group_no" label="رقم الجماعة" color="primary"
                                     bg-color="grey-1" class="rounded-borders" />
                             </div>
+
+                            <div class="col-12 col-md-6">
+                                <q-input filled dense v-model.number="form.juz_count" label="عدد الأجزاء" type="number"
+                                    color="primary" bg-color="grey-1" class="rounded-borders"
+                                    :rules="[val => val > 0 || 'يجب أن يكون أكبر من 0']" />
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <q-input filled dense v-model="form.hijri_date" label="التاريخ الهجري" color="primary"
+                                    bg-color="grey-1" class="rounded-borders" readonly>
+                                    <template v-slot:append>
+                                        <q-icon name="event" class="cursor-pointer">
+                                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                                <div class="q-pa-md bg-white row q-gutter-sm" style="min-width: 300px">
+                                                    <q-select dense outlined v-model="hijriDay" :options="daysList"
+                                                        label="اليوم" class="col"
+                                                        @update:model-value="updateHijriDate" />
+                                                    <q-select dense outlined v-model="hijriMonth"
+                                                        :options="islamicLocale.months" label="الشهر" class="col-grow"
+                                                        @update:model-value="updateHijriDate" />
+                                                    <q-select dense outlined v-model="hijriYear" :options="yearsList"
+                                                        label="السنة" class="col"
+                                                        @update:model-value="updateHijriDate" />
+                                                </div>
+                                            </q-popup-proxy>
+                                        </q-icon>
+                                    </template>
+                                </q-input>
+                            </div>
+
                         </div>
 
                         <div class="q-mt-md">
@@ -215,7 +333,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useQuasar, Loading } from 'quasar'
@@ -236,7 +354,7 @@ const shareWhatsapp = async (khatma) => {
     captureDiv.innerHTML = `
         <div style="padding: 30px; direction: rtl; font-family: 'Roboto', 'Arial', sans-serif; background: #fff; border: 1px solid #eee;">
              <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: #00897B; margin: 0 0 5px 0; font-size: 24px;">الختمات</h2>
+                <h2 style="color: #00897B; margin: 0 0 5px 0; font-size: 24px;">ختمة</h2>
                 <div style="color: #666; font-size: 14px;">${khatma.khatma_no || 'تفاصيل الختمة'}</div>
             </div>
             <div class="description-content" style="font-size: 16px; line-height: 1.6; color: #333;">
@@ -307,6 +425,112 @@ const downloadImage = (canvas) => {
     document.body.removeChild(link)
     Swal.fire({ icon: 'success', title: 'تم التحميل', text: 'تم تحميل الصورة للمشاركة', timer: 2000, showConfirmButton: false })
 }
+
+const roseData = ref({ khatma_no: '', group_name: '', people_group_no: '', description_text: '', parts: [] })
+
+const rightColumnParts = computed(() => {
+    // Return first half (e.g., 1-15)
+    return roseData.value.parts.slice(0, Math.ceil(roseData.value.parts.length / 2))
+})
+
+const leftColumnParts = computed(() => {
+    // Return second half (e.g., 16-30)
+    return roseData.value.parts.slice(Math.ceil(roseData.value.parts.length / 2))
+})
+
+
+const generateRoseImage = async (khatma) => {
+    try {
+        Loading.show({ message: 'جاري تحضير البيانات...' })
+
+        // 1. Fetch Assignments
+        const res = await axios.get('/api/khatma-assignments', { params: { khatma_id: khatma.id } })
+        const assignments = res.data
+
+        // 2. Prepare Data Structure (Unique by User Name)
+        const totalParts = khatma.juz_count || 30
+        const userMap = new Map()
+
+        // Helper to format plain text description
+        const plainDesc = formatDescriptionForSharing(khatma.description).split('\n')[0] // Take first line as title/name
+
+        for (let i = 1; i <= totalParts; i++) {
+            const assignment = assignments.find(a => a.parts && a.parts.includes(i))
+            const userName = assignment ? assignment.user.name : 'غير محدد'
+            const isRead = assignment ? !!assignment.read : false
+
+            if (!userMap.has(userName)) {
+                userMap.set(userName, { userName, parts: [], reads: [] })
+            }
+            const g = userMap.get(userName)
+            g.parts.push(i)
+            g.reads.push(isRead)
+        }
+        const groupedParts = Array.from(userMap.values())
+
+        roseData.value = {
+            khatma_no: khatma.khatma_no,
+            group_name: khatma.group?.name,
+            people_group_no: khatma.people_group_no,
+            description_text: plainDesc,
+            parts: groupedParts
+        }
+
+        // ... previous data preparation (roseData.value assignment) ...
+
+        // Wait for DOM
+        await new Promise(resolve => setTimeout(resolve, 500))
+
+        const captureDiv = document.getElementById('rose-capture-container')
+
+        Loading.show({ message: 'جاري النسخ...' })
+
+        // Create Clipboard Item
+        const htmlContent = captureDiv.innerHTML
+        const plainText = captureDiv.innerText
+
+        try {
+            if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
+                const clipboardItem = new ClipboardItem({
+                    'text/html': new Blob([htmlContent], { type: 'text/html' }),
+                    'text/plain': new Blob([plainText], { type: 'text/plain' })
+                })
+                await navigator.clipboard.write([clipboardItem])
+            } else {
+                throw new Error('Clipboard API unavailable')
+            }
+        } catch (err) {
+            console.warn('Clipboard API failed, trying fallback execCommand', err)
+
+            // Fallback: Select text and copy
+            const selection = window.getSelection()
+            const range = document.createRange()
+            range.selectNodeContents(captureDiv)
+            selection.removeAllRanges()
+            selection.addRange(range)
+
+            const successful = document.execCommand('copy')
+            selection.removeAllRanges() // Clear selection after copy
+
+            if (!successful) throw new Error('Fallback copy failed')
+        }
+
+        Loading.hide()
+        Swal.fire({
+            icon: 'success',
+            title: 'تم النسخ',
+            text: 'تم نسخ النص المنسق إلى الحافظة',
+            timer: 2000,
+            showConfirmButton: false
+        })
+
+    } catch (error) {
+        Loading.hide()
+        console.error('Copy failed', error)
+        Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل النسخ إلى الحافظة: ' + (error.message || '') })
+    }
+}
+
 const groupOptions = ref([])
 const loading = ref(false)
 const dialogVisible = ref(false)
@@ -316,9 +540,10 @@ const form = ref({ id: null, group_id: null, khatma_no: '', people_group_no: '',
 const columns = [
     { name: 'id', label: '#', field: 'id', sortable: true, align: 'left', style: 'width: 50px' },
     { name: 'group_id', label: 'المجموعة', field: row => row.group?.name || '', sortable: true, align: 'center' },
+    { name: 'hijri_date', label: 'التاريخ الهجري', field: 'hijri_date', sortable: true, align: 'center' },
     { name: 'khatma_no', label: 'رقم الختمة', field: 'khatma_no', sortable: true, align: 'left' },
     { name: 'people_group_no', label: 'رقم الجماعة', field: 'people_group_no', sortable: true, align: 'center' },
-    { name: 'actions', label: 'الإجراءات', field: 'actions', align: 'center', style: 'width: 200px' }
+    { name: 'actions', label: 'الإجراءات', field: 'actions' }
 ]
 
 const fetchKhatmas = async () => {
@@ -336,7 +561,7 @@ const fetchKhatmas = async () => {
 
 const fetchGroups = async () => {
     try {
-        const response = await axios.get('/api/groups')
+        const response = await axios.get('/api/groups', { params: { type: 'tilawa' } })
         groupOptions.value = response.data
     } catch (error) {
         console.error('Error fetching groups')
@@ -345,7 +570,8 @@ const fetchGroups = async () => {
 
 const openCreateDialog = () => {
     isEditing.value = false
-    form.value = { id: null, group_id: null, khatma_no: '', people_group_no: '', description: '' }
+    form.value = { id: null, group_id: null, khatma_no: '', people_group_no: '', description: '', hijri_date: '', juz_count: 30 }
+    parseHijriDate('')
     fetchGroups()
     dialogVisible.value = true
 }
@@ -353,6 +579,7 @@ const openCreateDialog = () => {
 const editKhatma = (khatma) => {
     isEditing.value = true
     form.value = { ...khatma }
+    parseHijriDate(khatma.hijri_date)
     fetchGroups()
     dialogVisible.value = true
 }
@@ -409,6 +636,41 @@ const insertEmoji = () => {
 const selectEmoji = (emoji) => {
     form.value.description += emoji
     emojiDialog.value = false
+}
+
+const islamicLocale = {
+    days: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+    daysShort: ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+    months: ['محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'],
+    monthsShort: ['محرم', 'صفر', 'ربيع 1', 'ربيع 2', 'جمادى 1', 'جمادى 2', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة']
+}
+
+const hijriDay = ref('')
+const hijriMonth = ref('')
+const hijriYear = ref('')
+const daysList = Array.from({ length: 30 }, (_, i) => i + 1)
+const yearsList = Array.from({ length: 10 }, (_, i) => 1445 + i) // 1445 to 1454
+
+const updateHijriDate = () => {
+    if (hijriDay.value && hijriMonth.value && hijriYear.value) {
+        form.value.hijri_date = `${hijriDay.value} ${hijriMonth.value} ${hijriYear.value}`
+    }
+}
+
+// Helper to parse string back to dropdowns
+const parseHijriDate = (dateStr) => {
+    if (!dateStr) {
+        hijriDay.value = ''
+        hijriMonth.value = ''
+        hijriYear.value = ''
+        return
+    }
+    const parts = dateStr.split(' ')
+    if (parts.length === 3) {
+        hijriDay.value = parseInt(parts[0]) || parts[0]
+        hijriMonth.value = parts[1]
+        hijriYear.value = parseInt(parts[2]) || parts[2]
+    }
 }
 
 const confirmDelete = (khatma) => {

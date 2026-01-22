@@ -10,5 +10,5 @@ class Group extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'active'];
+    protected $fillable = ['name', 'active', 'created_by', 'type'];
 }
