@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ "main" ] # يعمل فقط عند الرفع للفرع الرئيسي
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Execute remote commands via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # الانتقال لمجلد المشروع
+            cd /var/www/khatma
+            
+            # سحب التحديثات
+            git pull origin main
+            
+            # تثبيت اعتماديات PHP
+            composer install --no-dev --optimize-autoloader
+            
+            # تثبيت اعتماديات Node وبناء الواجهات (طلبك الأساسي)
+            npm ci
+            npm run build
+            
+            # ترحيل قاعدة البيانات
+            php artisan migrate --force
+            
+            # تحديث الكاش
+            php artisan optimize
+            
+            # تحديث الصلاحيات (لتجنب مشاكل الـ Permission)
+            sudo chown -R www-data:www-data storage bootstrap/cache
