@@ -5,7 +5,7 @@
         <q-btn flat dense round @click="toggleLeftDrawer" aria-label="Menu" icon="menu" />
 
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
-          <q-icon name="menu_book" color="primary" size="28px" />
+          <img src="/logo.png" style="height: 28px; width: auto;" class="q-mr-sm">
           <q-toolbar-title shrink class="text-weight-bold text-primary">
             Khatma
           </q-toolbar-title>

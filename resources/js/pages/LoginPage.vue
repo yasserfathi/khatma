@@ -6,8 +6,8 @@
     <transition appear enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
       <q-card square class="q-pa-lg shadow-24 relative-position glass-card" style="width: 380px; border-radius: 16px;">
         <q-card-section class="column items-center q-pb-none">
-          <q-avatar size="80px" class="shadow-10 q-mb-md bg-teal-9 text-white">
-            <q-icon name="menu_book" size="50px" />
+          <q-avatar size="100px" class="shadow-10 q-mb-md bg-white">
+            <img src="/logo.png" style="object-fit: contain; padding: 10px;">
           </q-avatar>
           <div class="text-h5 text-center text-teal-9 text-weight-bold q-mb-xs">تسجيل الدخول</div>
           <div class="text-subtitle1 text-center text-grey-8">تطبيق ختمة</div>

@@ -9,6 +9,11 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// Set production URL for mobile builds
+if (window.Capacitor) {
+    window.axios.defaults.baseURL = 'https://yasserfathi.info';
+}
+
 window.axios.interceptors.response.use(
     response => response,
     error => {
