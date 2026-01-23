@@ -22,10 +22,14 @@
               </template>
             </q-input>
 
-            <q-input dense filled v-model="password" type="password" label="كلمة المرور" color="teal"
-              label-color="grey-7" class="bg-white">
+            <q-input dense filled v-model="password" :type="isPasswordVisible ? 'text' : 'password'" label="كلمة المرور"
+              color="teal" label-color="grey-7" class="bg-white">
               <template v-slot:prepend>
                 <q-icon name="lock" color="teal" />
+              </template>
+              <template v-slot:append>
+                <q-icon :name="isPasswordVisible ? 'visibility_off' : 'visibility'" class="cursor-pointer" color="teal"
+                  @click="isPasswordVisible = !isPasswordVisible" />
               </template>
             </q-input>
           </q-form>
@@ -46,6 +50,7 @@ import bgImage from 'assets/islamic_bg_v4.png'
 
 const identity = ref('')
 const password = ref('')
+const isPasswordVisible = ref(false)
 
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
