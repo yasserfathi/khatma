@@ -203,6 +203,10 @@ const editUser = (user) => {
 const saveUser = async () => {
     try {
         const data = { ...form.value }
+        // Clean phone number: strip all whitespace
+        if (data.phone) {
+            data.phone = data.phone.replace(/\s+/g, '')
+        }
         if (isEditing.value) {
             if (!data.password) delete data.password; // Don't send empty password on edit
             await axios.put(`/api/users/${form.value.id}`, data)
