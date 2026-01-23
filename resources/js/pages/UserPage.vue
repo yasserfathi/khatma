@@ -94,7 +94,8 @@
                         </q-input>
 
                         <q-input filled dense v-model="form.phone" label="رقم الهاتف" color="primary" bg-color="grey-1"
-                            class="rounded-borders" :rules="[val => !!val || 'يرجى إدخال رقم الهاتف']">
+                            class="rounded-borders" :rules="[val => !!val || 'يرجى إدخال رقم الهاتف']"
+                            @update:model-value="val => form.phone = val.replace(/\s+/g, '')">
                             <template v-slot:prepend>
                                 <q-icon name="phone" color="primary" />
                             </template>
