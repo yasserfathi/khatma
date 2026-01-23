@@ -30,7 +30,9 @@ return new class extends Migration {
     {
         Schema::table('khatmas', function (Blueprint $table) {
             if (Schema::hasColumn('khatmas', 'group_reading_id')) {
-                $table->dropForeign(['group_reading_id']);
+                if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+                    $table->dropForeign(['group_reading_id']);
+                }
                 $table->dropColumn('group_reading_id');
             }
             if (!Schema::hasColumn('khatmas', 'people_group_no')) {
