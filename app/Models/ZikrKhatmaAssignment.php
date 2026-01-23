@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class KhatmaAssignment extends Model
+class ZikrKhatmaAssignment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = [];
+    protected $table = 'zikr_khatma_assignments';
 
-    protected $casts = [
-        'parts' => 'array',
-        'read' => 'boolean',
+    protected $fillable = [
+        'khatma_id',
+        'user_id',
+        'zikr_count'
     ];
 
     public function khatma()

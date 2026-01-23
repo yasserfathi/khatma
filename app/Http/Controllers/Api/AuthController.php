@@ -11,15 +11,23 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
+        $request->validate([
+            'email' => 'required', // This can be email or name
             'password' => 'required',
         ]);
+
+        $identity = $request->email;
+        $field = filter_var($identity, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        $credentials = [
+            $field => $identity,
+            'password' => $request->password,
+        ];
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             if (!$user->active) {
-                return response()->json(['message' => 'Account is inactive'], 401);
+                return response()->json(['message' => 'الحساب غير نشط'], 401);
             }
             $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -30,7 +38,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Invalid login details'], 401);
+        return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
     }
 
     public function logout(Request $request)

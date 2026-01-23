@@ -14,6 +14,10 @@ const routes = [
       { path: '/user', component: () => import('pages/UserPage.vue') },
       { path: '/khatma-tilawa', component: () => import('pages/KhatmaTilawaPage.vue') },
       { path: '/khatma-tilawa/:id/assign', component: () => import('pages/AssignPage.vue') },
+      { path: '/khatma-zikr', component: () => import('pages/KhatmaZikrPage.vue') },
+      { path: '/khatma-zikr/:id/assign', component: () => import('pages/AssignZikrPage.vue') },
+      { path: '/zikr-participants', component: () => import('pages/ParticipantNumbersPage.vue') },
+      { path: '/users', component: () => import('pages/UserPage.vue') },
       { path: '/group-reading', component: () => import('pages/GroupReadingPage.vue') },
       { path: '/change-password', component: () => import('pages/ChangePasswordPage.vue') }
     ],

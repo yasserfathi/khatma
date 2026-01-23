@@ -12,12 +12,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.interceptors.response.use(
     response => response,
     error => {
+        const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/';
+
         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
             // Clear auth data
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user_data');
-            // Redirect to login page
-            window.location.href = '/login';
+
+            // Only redirect if NOT on login page
+            if (!isLoginPage) {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }

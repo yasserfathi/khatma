@@ -93,7 +93,7 @@
                                 <q-item-section side>
                                     <div class="row items-center q-gutter-x-xs">
                                         <q-toggle size="sm" v-model="assign.read" color="teal"
-                                            :label="assign.read ? 'تمت القراءة' : 'لم تقرأ'" left-label
+                                            :label="assign.read ? 'تمت القراءة' : 'لم تتم القراءة'" left-label
                                             @update:model-value="(val) => toggleReadStatus(assign, val)" />
                                         <q-btn flat round color="primary" icon="edit" size="sm"
                                             @click="editAssignment(assign)" />
@@ -295,7 +295,7 @@ const fetchData = async () => {
         userOptions.value = users.value
 
         // 3. Get Existing Assignments
-        const assignRes = await axios.get('/api/khatma-assignments', {
+        const assignRes = await axios.get('/api/tilawa-khatma-assignments', {
             params: { khatma_id: khatmaId }
         })
         assignments.value = assignRes.data
@@ -338,17 +338,17 @@ const assignParts = async () => {
         }
 
         if (editingId.value) {
-            await axios.put(`/api/khatma-assignments/${editingId.value}`, payload)
+            await axios.put(`/api/tilawa-khatma-assignments/${editingId.value}`, payload)
             Swal.fire({ icon: 'success', title: 'تم التحديث', text: 'تم تحديث التعيين بنجاح', timer: 1500, showConfirmButton: false })
         } else {
-            await axios.post('/api/khatma-assignments', payload)
+            await axios.post('/api/tilawa-khatma-assignments', payload)
             Swal.fire({ icon: 'success', title: 'تم الحفظ', text: 'تم تعيين الأجزاء بنجاح', timer: 1500, showConfirmButton: false })
         }
 
         resetForm()
 
         // Reload assignments
-        const assignRes = await axios.get('/api/khatma-assignments', {
+        const assignRes = await axios.get('/api/tilawa-khatma-assignments', {
             params: { khatma_id: khatmaId }
         })
         assignments.value = assignRes.data
@@ -384,7 +384,7 @@ const deleteAssignment = (assign) => {
     }).then(async (result) => {
         if (result.isConfirmed) {
             try {
-                await axios.delete(`/api/khatma-assignments/${assign.id}`)
+                await axios.delete(`/api/tilawa-khatma-assignments/${assign.id}`)
                 Swal.fire('تم الحذف', 'تم حذف التعيين', 'success')
 
                 // If we were editing this assignment, reset the form
@@ -393,7 +393,7 @@ const deleteAssignment = (assign) => {
                 }
 
                 // Reload
-                const assignRes = await axios.get('/api/khatma-assignments', {
+                const assignRes = await axios.get('/api/tilawa-khatma-assignments', {
                     params: { khatma_id: khatmaId }
                 })
                 assignments.value = assignRes.data
@@ -426,7 +426,7 @@ onMounted(() => {
 
 const toggleReadStatus = async (assignment, newVal) => {
     try {
-        await axios.put(`/api/khatma-assignments/${assignment.id}`, {
+        await axios.put(`/api/tilawa-khatma-assignments/${assignment.id}`, {
             khatma_id: assignment.khatma_id,
             user_id: assignment.user_id,
             parts: assignment.parts,
@@ -468,7 +468,7 @@ const toggleReadStatus = async (assignment, newVal) => {
 
 .parts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 0.2fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 0.2fr));
     gap: 12px;
 }
 

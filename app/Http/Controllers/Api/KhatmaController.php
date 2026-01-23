@@ -14,13 +14,51 @@ class KhatmaController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $type = $request->type; // 'tilawa' or 'zikr'
+
+        $query = Khatma::with(['group', 'groupReading']);
+
+        if ($type) {
+            $query->whereHas('group', function ($q) use ($type) {
+                $q->where('type', $type);
+            });
+        }
+
         if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
-            return Khatma::with('group')
-                ->where('created_by', $user->id)
+            $khatmas = $query->where('created_by', $user->id)
                 ->latest()
                 ->get();
+        } else {
+            $khatmas = $query->latest()->get();
         }
-        return Khatma::with('group')->latest()->get();
+
+        // Calculate progress
+        foreach ($khatmas as $khatma) {
+            if ($khatma->group->type === 'tilawa') {
+                $assignments = $khatma->tilawaAssignments;
+                $totalReaders = $assignments->count();
+                $finishedReaders = $assignments->where('read', true)->count();
+
+                $khatma->progress = [
+                    'finished' => $finishedReaders,
+                    'total' => $totalReaders,
+                    'percentage' => $totalReaders > 0 ? round(($finishedReaders / $totalReaders) * 100) : 0
+                ];
+            } else {
+                // For Zikr, count how many participants have entered a count
+                $assignments = $khatma->zikrAssignments;
+                $totalParticipants = $assignments->count();
+                $finishedParticipants = $assignments->where('zikr_count', '>', 0)->count();
+
+                $khatma->progress = [
+                    'finished' => $finishedParticipants,
+                    'total' => $totalParticipants ?: 1,
+                    'percentage' => $totalParticipants > 0 ? round(($finishedParticipants / $totalParticipants) * 100) : 0
+                ];
+            }
+        }
+
+        return $khatmas;
     }
 
     /**
@@ -30,8 +68,8 @@ class KhatmaController extends Controller
     {
         $validated = $request->validate([
             'group_id' => 'required|exists:groups,id',
+            'group_reading_id' => 'nullable|exists:group_readings,id',
             'khatma_no' => 'nullable|string|max:50',
-            'people_group_no' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'hijri_date' => 'nullable|string',
             'juz_count' => 'nullable|integer|min:1',
@@ -50,7 +88,7 @@ class KhatmaController extends Controller
 
         $khatma = Khatma::create($validated);
 
-        return response()->json($khatma->load('group'), 201);
+        return response()->json($khatma->load(['group', 'groupReading']), 201);
     }
 
     /**
@@ -64,7 +102,7 @@ class KhatmaController extends Controller
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
         }
-        return $khatma->load('group');
+        return $khatma->load(['group', 'groupReading']);
     }
 
     /**
@@ -81,8 +119,8 @@ class KhatmaController extends Controller
 
         $validated = $request->validate([
             'group_id' => 'sometimes|required|exists:groups,id',
+            'group_reading_id' => 'nullable|exists:group_readings,id',
             'khatma_no' => 'nullable|string|max:50',
-            'people_group_no' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'hijri_date' => 'nullable|string',
             'juz_count' => 'nullable|integer|min:1',
@@ -98,7 +136,7 @@ class KhatmaController extends Controller
 
         $khatma->update($validated);
 
-        return $khatma->load('group');
+        return $khatma->load(['group', 'groupReading']);
     }
 
     /**

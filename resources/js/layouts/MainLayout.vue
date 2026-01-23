@@ -41,7 +41,7 @@
 
           <q-separator class="q-my-md" />
 
-          <q-item clickable v-ripple to="/change-password">
+          <q-item clickable v-ripple to="/change-password" active-class="text-primary bg-primary-1">
             <q-item-section avatar>
               <q-icon color="grey-8" name="lock" />
             </q-item-section>
@@ -112,9 +112,10 @@ const links1 = [
   { icon: 'home', text: 'الرئيسية', to: '/app' },
   { icon: 'group', text: 'مجموعات الواتساب', to: '/group' },
   { icon: 'group', text: 'مجموعات القراءة', to: '/group-reading' },
-  { icon: 'person', text: 'المستخدمين', to: '/user' },
-  { icon: 'menu_book', text: 'ختمة تلاوة جديدة', to: '/khatma-tilawa' },
-  { icon: 'menu_book', text: 'ختمة ذكر جديدة', to: '/khatma-zikr' },
+  { icon: 'person', text: 'المشاركين', to: '/user' },
+  { icon: 'person', text: 'ترقيم المشتركين', to: '/zikr-participants' },
+  { icon: 'menu_book', text: 'ختمات التلاوة', to: '/khatma-tilawa' },
+  { icon: 'menu_book', text: 'ختمات الذكر', to: '/khatma-zikr' },
 ]
 
 </script>

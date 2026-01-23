@@ -24,6 +24,21 @@
                     </q-td>
                 </template>
 
+                <template v-slot:body-cell-progress="props">
+                    <q-td :props="props">
+                        <div class="column items-center q-gutter-y-xs" style="min-width: 140px">
+                            <q-linear-progress :value="props.row.progress ? props.row.progress.percentage / 100 : 0"
+                                color="teal" track-color="grey-3" rounded size="12px" class="shadow-1" />
+                            <div class="row full-width justify-between text-caption text-grey-8">
+                                <span class="text-weight-bold">{{ props.row.progress ? props.row.progress.percentage : 0
+                                    }}% مكتمل</span>
+                                <span>{{ props.row.progress ?
+                                    `${props.row.progress.finished}/${props.row.progress.total}` : '0/0' }}</span>
+                            </div>
+                        </div>
+                    </q-td>
+                </template>
+
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" auto-width>
                         <div class="row justify-center q-gutter-x-sm no-wrap">
@@ -183,8 +198,14 @@
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <q-input filled dense v-model="form.people_group_no" label="رقم الجماعة" color="primary"
-                                    bg-color="grey-1" class="rounded-borders" />
+                                <q-select filled dense v-model="form.group_reading_id" :options="readingGroupOptions"
+                                    option-value="id" :option-label="opt => opt ? `${opt.group_no} - ${opt.names}` : ''"
+                                    emit-value map-options label="مجموعة القراءة" color="primary" bg-color="grey-1"
+                                    class="rounded-borders">
+                                    <template v-slot:prepend>
+                                        <q-icon name="format_list_numbered" color="primary" />
+                                    </template>
+                                </q-select>
                             </div>
 
                             <div class="col-12 col-md-6">
@@ -234,7 +255,12 @@
                                     handler: insertEmoji
                                 }
                             }" :toolbar="[
-                                ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
+                                [
+                                    'bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'
+                                ],
+                                [
+                                    'left', 'center', 'right', 'justify'
+                                ],
                                 ['insert_table', 'insert_emoji'],
                                 ['print', 'fullscreen'],
                                 [
@@ -346,84 +372,117 @@ const khatmas = ref([])
 // ... (other functions) ...
 
 const shareWhatsapp = async (khatma) => {
-    // 1. Prepare Content
-    const captureDiv = document.getElementById('capture-container')
-    if (!captureDiv) return
-
-    // Inject content with specific styling for image
-    captureDiv.innerHTML = `
-        <div style="padding: 30px; direction: rtl; font-family: 'Roboto', 'Arial', sans-serif; background: #fff; border: 1px solid #eee;">
-             <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: #00897B; margin: 0 0 5px 0; font-size: 24px;">ختمة</h2>
-                <div style="color: #666; font-size: 14px;">${khatma.khatma_no || 'تفاصيل الختمة'}</div>
-            </div>
-            <div class="description-content" style="font-size: 16px; line-height: 1.6; color: #333;">
-                ${khatma.description}
-            </div>
-            <div style="margin-top: 30px; padding-top: 15px; border-top: 1px dashed #ccc; text-align: center; color: #888; font-size: 12px;">
-                تم الإنشاء بواسطة تطبيق ختمة
-            </div>
-        </div>
-    `
-
-    // Wait a tick for DOM update
-    await new Promise(resolve => setTimeout(resolve, 100))
-
     try {
-        Loading.show({ message: 'جاري إنشاء الصورة...' })
+        Loading.show({ message: 'جاري تحضير الرسالة...' })
 
-        // 2. Capture
-        const canvas = await html2canvas(captureDiv, {
-            scale: 2, // High quality
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false
-        })
+        // 1. Fetch Assignments
+        const res = await axios.get('/api/tilawa-khatma-assignments', { params: { khatma_id: khatma.id } })
+        const assignments = res.data
 
-        // 3. Convert to Blob
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+        // 2. Group by User and check if finished
+        const userMap = new Map()
 
-        Loading.hide()
+        // Use assignments directly instead of looping through part counts to be more accurate to fetched data
+        assignments.forEach(assign => {
+            const userName = assign.user?.name || 'غير محدد'
+            const isRead = !!assign.read
 
-        if (!blob) throw new Error('Blob creation failed')
+            if (!userMap.has(userName)) {
+                userMap.set(userName, { userName, finished: true })
+            }
+            const g = userMap.get(userName)
+            if (!isRead) g.finished = false
+        });
 
-        const file = new File([blob], 'khatma-share.png', { type: 'image/png' })
+        const finishers = Array.from(userMap.values())
+            .filter(u => u.finished && u.userName !== 'غير محدد')
+            .map(u => u.userName)
 
-        // 4. Share or Download
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
+        // 3. Construct Message
+        const khatmaNo = khatma.khatma_no || '---'
+        const groupNo = khatma.group_reading?.group_no || '---'
+        const groupNames = khatma.group_reading?.names || ''
+
+        let message = `الختمة رقم (${khatmaNo})\n`
+        message += `مجموعة رقم (${groupNo})\n`
+        if (groupNames) message += `${groupNames}\n`
+        message += `السبّاقون جداً جداً و المسارعون للخيرات\n`
+        message += `${finishers.join('؛ ')}\n\n`
+        message += `نسأل الله تعالي أن يجزيهم خير الجزاء وأن يجعل ثواب تلاوتهم رحمةً ونوراً`
+
+        // 4. Action: Try sharing, fallback to Copy
+        try {
+            if (navigator.share) {
                 await navigator.share({
-                    files: [file],
-                    title: 'تفاصيل الختمة',
-                    text: 'شاهد تفاصيل الختمة في الصورة المرفقة'
+                    text: message,
+                    title: 'مشاركة التلاوة'
                 })
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error('Share failed', err)
-                    // Fallback to download
-                    downloadImage(canvas)
+            } else {
+                throw new Error('Web Share API not supported')
+            }
+        } catch (shareErr) {
+            // Fallback to Clipboard - Handle non-secure context (HTTP)
+            let copySuccess = false
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(message)
+                    copySuccess = true
+                } catch (e) {
+                    console.error('Clipboard API failed', e)
                 }
             }
-        } else {
-            // Fallback for Desktop / unsupported browsers
-            downloadImage(canvas)
+
+            if (!copySuccess) {
+                // Secondary fallback: Temporary textarea
+                const textArea = document.createElement("textarea")
+                textArea.value = message
+                textArea.style.position = "fixed"
+                textArea.style.left = "-9999px"
+                textArea.style.top = "0"
+                document.body.appendChild(textArea)
+                textArea.focus()
+                textArea.select()
+                try {
+                    copySuccess = document.execCommand('copy')
+                } catch (err) {
+                    console.error('execCommand copy failed', err)
+                }
+                document.body.removeChild(textArea)
+            }
+
+            if (copySuccess) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم النسخ',
+                    text: 'تم نسخ نص المشاركة للحافظة (للمشاركة في واتساب)',
+                    timer: 3000,
+                    showConfirmButton: false
+                })
+            } else {
+                throw new Error('فشل النسخ إلى الحافظة')
+            }
         }
 
-    } catch (err) {
         Loading.hide()
-        console.error('Capture failed', err)
-        Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل إنشاء الصورة' })
+    } catch (error) {
+        Loading.hide()
+        console.error('Share failed', error)
+        Swal.fire({
+            icon: 'error',
+            title: 'خطأ',
+            text: error.message || 'فشل مشاركة الرسالة. يرجى التأكد من اختيار المجموعة والبيانات.'
+        })
     }
 }
 
-const downloadImage = (canvas) => {
+const downloadImage = (canvas, filename = 'khatma-share.png') => {
     const link = document.createElement('a')
-    link.download = 'khatma-share.png'
+    link.download = filename
     link.href = canvas.toDataURL()
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    Swal.fire({ icon: 'success', title: 'تم التحميل', text: 'تم تحميل الصورة للمشاركة', timer: 2000, showConfirmButton: false })
+    Swal.fire({ icon: 'success', title: 'تم النسخ', text: 'تم تحميل الصورة للمشاركة', timer: 2000, showConfirmButton: false })
 }
 
 const roseData = ref({ khatma_no: '', group_name: '', people_group_no: '', description_text: '', parts: [] })
@@ -441,18 +500,15 @@ const leftColumnParts = computed(() => {
 
 const generateRoseImage = async (khatma) => {
     try {
-        Loading.show({ message: 'جاري تحضير البيانات...' })
+        Loading.show({ message: 'جاري تحضير التقرير...' })
 
         // 1. Fetch Assignments
-        const res = await axios.get('/api/khatma-assignments', { params: { khatma_id: khatma.id } })
+        const res = await axios.get('/api/tilawa-khatma-assignments', { params: { khatma_id: khatma.id } })
         const assignments = res.data
 
-        // 2. Prepare Data Structure (Unique by User Name)
-        const totalParts = khatma.juz_count || 30
+        // 2. Group by User
         const userMap = new Map()
-
-        // Helper to format plain text description
-        const plainDesc = formatDescriptionForSharing(khatma.description).split('\n')[0] // Take first line as title/name
+        const totalParts = khatma.juz_count || 30
 
         for (let i = 1; i <= totalParts; i++) {
             const assignment = assignments.find(a => a.parts && a.parts.includes(i))
@@ -466,90 +522,124 @@ const generateRoseImage = async (khatma) => {
             g.parts.push(i)
             g.reads.push(isRead)
         }
-        const groupedParts = Array.from(userMap.values())
 
-        roseData.value = {
-            khatma_no: khatma.khatma_no,
-            group_name: khatma.group?.name,
-            people_group_no: khatma.people_group_no,
-            description_text: plainDesc,
-            parts: groupedParts
+        const groupedUsers = Array.from(userMap.values())
+
+        // 3. Prepare for 2-column layout (each row has 2 pairs of Name/Parts)
+        const rows = []
+        for (let i = 0; i < groupedUsers.length; i += 2) {
+            rows.push({
+                right: groupedUsers[i],
+                left: groupedUsers[i + 1] || null
+            })
         }
 
-        // ... previous data preparation (roseData.value assignment) ...
+        // 4. Build Table UI
+        const captureDiv = document.getElementById('capture-container')
+        if (!captureDiv) return
 
-        // Wait for DOM
-        await new Promise(resolve => setTimeout(resolve, 500))
+        captureDiv.innerHTML = `
+            <div dir="rtl" style="padding: 20px; background: white; font-family: 'Segoe UI', 'Tahoma', sans-serif;">
+                <table style="width: 100%; border-collapse: collapse; text-align: center; border: 0;">
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="padding: 10px; font-size: 18px; border: 0; background: #fff;">بسم الله الرحمن الرحيم</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="padding: 8px; font-size: 16px; border: 0; background: #fff;">ختمة رقم: ${khatma.khatma_no || '---'}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="padding: 8px; font-size: 16px; border: 0; background: #fff;">المجموعة رقم (${khatma.group_reading?.group_no || '---'})</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="padding: 8px; font-size: 14px; border: 0; color: #555; background: #fff;">${khatma.group_reading?.names || 'أسم مجموعة القراءة'}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows.map(row => `
+                            <tr>
+                                <!-- Right Pair -->
+                                <td style="padding: 8px; text-align: right; font-size: 15px; font-weight: bold; width: 30%; border: 0;">${row.right.userName}</td>
+                                <td style="padding: 8px; text-align: right; font-size: 14px; width: 20%; border: 0;">
+                                    <div style="direction: rtl;">
+                                        ${row.right.parts.join('، ')}${row.right.reads.every(r => r) ? '🌹' : ''}
+                                    </div>
+                                </td>
 
-        const captureDiv = document.getElementById('rose-capture-container')
+                                <!-- Left Pair -->
+                                ${row.left ? `
+                                    <td style="padding: 8px; text-align: right; font-size: 15px; font-weight: bold; width: 30%; border: 0;">${row.left.userName}</td>
+                                    <td style="padding: 8px; text-align: right; font-size: 14px; width: 20%; border: 0;">
+                                        <div style="direction: rtl;">
+                                            ${row.left.parts.join('، ')}${row.left.reads.every(r => r) ? '🌹' : ''}
+                                        </div>
+                                    </td>
+                                ` : '<td style="border: 0;"></td><td style="border: 0;"></td>'}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
 
-        Loading.show({ message: 'جاري النسخ...' })
+                <div style="margin-top: 20px; text-align: center; color: #888; font-size: 12px;">
+                    تم الإنشاء بواسطة تطبيق ختمة
+                </div>
+            </div>
+        `
 
-        // Create Clipboard Item
-        const htmlContent = captureDiv.innerHTML
-        const plainText = captureDiv.innerText
+        // Wait for rendering
+        await new Promise(resolve => setTimeout(resolve, 300))
 
-        try {
-            if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
-                const clipboardItem = new ClipboardItem({
-                    'text/html': new Blob([htmlContent], { type: 'text/html' }),
-                    'text/plain': new Blob([plainText], { type: 'text/plain' })
-                })
-                await navigator.clipboard.write([clipboardItem])
-            } else {
-                throw new Error('Clipboard API unavailable')
-            }
-        } catch (err) {
-            console.warn('Clipboard API failed, trying fallback execCommand', err)
-
-            // Fallback: Select text and copy
-            const selection = window.getSelection()
-            const range = document.createRange()
-            range.selectNodeContents(captureDiv)
-            selection.removeAllRanges()
-            selection.addRange(range)
-
-            const successful = document.execCommand('copy')
-            selection.removeAllRanges() // Clear selection after copy
-
-            if (!successful) throw new Error('Fallback copy failed')
-        }
-
-        Loading.hide()
-        Swal.fire({
-            icon: 'success',
-            title: 'تم النسخ',
-            text: 'تم نسخ النص المنسق إلى الحافظة',
-            timer: 2000,
-            showConfirmButton: false
+        const canvas = await html2canvas(captureDiv, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff'
         })
 
-    } catch (error) {
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
         Loading.hide()
-        console.error('Copy failed', error)
-        Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل النسخ إلى الحافظة: ' + (error.message || '') })
+
+        if (!blob) throw new Error('فشل إنشاء الصورة')
+
+        const file = new File([blob], 'khatma-tilawa-share.png', { type: 'image/png' })
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'توزيع أجزاء الختمة',
+                text: 'شاهد توزيع أجزاء الختمة في الصورة المرفقة'
+            })
+        } else {
+            downloadImage(canvas, 'khatma-tilawa-share.png')
+        }
+
+    } catch (err) {
+        Loading.hide()
+        console.error('Share failed', err)
+        Swal.fire({ icon: 'error', title: 'خطأ', text: err.message || 'فشل مشاركة التقرير' })
     }
 }
 
 const groupOptions = ref([])
+const readingGroupOptions = ref([])
 const loading = ref(false)
 const dialogVisible = ref(false)
 const isEditing = ref(false)
-const form = ref({ id: null, group_id: null, khatma_no: '', people_group_no: '', description: '' })
+const form = ref({ id: null, group_id: null, group_reading_id: null, khatma_no: '', description: '', hijri_date: '', juz_count: 30 })
 
 const columns = [
     { name: 'id', label: '#', field: 'id', sortable: true, align: 'left', style: 'width: 50px' },
     { name: 'group_id', label: 'المجموعة', field: row => row.group?.name || '', sortable: true, align: 'center' },
     { name: 'hijri_date', label: 'التاريخ الهجري', field: 'hijri_date', sortable: true, align: 'center' },
     { name: 'khatma_no', label: 'رقم الختمة', field: 'khatma_no', sortable: true, align: 'left' },
-    { name: 'people_group_no', label: 'رقم الجماعة', field: 'people_group_no', sortable: true, align: 'center' },
+    { name: 'group_reading_id', label: 'مجموعة القراءة', field: row => row.group_reading ? `${row.group_reading.group_no} - ${row.group_reading.names}` : '', sortable: true, align: 'center' },
+    { name: 'progress', label: 'الإنجاز', field: 'progress', align: 'center' },
     { name: 'actions', label: 'الإجراءات', field: 'actions' }
 ]
 
 const fetchKhatmas = async () => {
     loading.value = true
     try {
-        const response = await axios.get('/api/khatmas')
+        const response = await axios.get('/api/khatmas', { params: { type: 'tilawa' } })
         khatmas.value = response.data
     } catch (error) {
         console.error('Error fetching khatmas:', error)
@@ -568,11 +658,21 @@ const fetchGroups = async () => {
     }
 }
 
+const fetchReadingGroups = async () => {
+    try {
+        const response = await axios.get('/api/group-readings')
+        readingGroupOptions.value = response.data
+    } catch (error) {
+        console.error('Error fetching reading groups')
+    }
+}
+
 const openCreateDialog = () => {
     isEditing.value = false
-    form.value = { id: null, group_id: null, khatma_no: '', people_group_no: '', description: '', hijri_date: '', juz_count: 30 }
+    form.value = { id: null, group_id: null, group_reading_id: null, khatma_no: '', description: '', hijri_date: '', juz_count: 30 }
     parseHijriDate('')
     fetchGroups()
+    fetchReadingGroups()
     dialogVisible.value = true
 }
 
@@ -581,6 +681,7 @@ const editKhatma = (khatma) => {
     form.value = { ...khatma }
     parseHijriDate(khatma.hijri_date)
     fetchGroups()
+    fetchReadingGroups()
     dialogVisible.value = true
 }
 
@@ -750,48 +851,60 @@ const formatDescriptionForSharing = (html) => {
         .trim()
 }
 
-const copyDescription = (khatma) => {
-    const text = formatDescriptionForSharing(khatma.description)
-    if (!text) {
+const copyDescription = async (khatma) => {
+    const htmlContent = khatma.description
+    if (!htmlContent) {
         Swal.fire({ icon: 'info', title: 'تنبيه', text: 'لا يوجد وصف للنسخ', timer: 1500, showConfirmButton: false })
         return
     }
 
-    // Fallback for non-secure contexts (e.g., HTTP IP address)
-    if (!navigator.clipboard) {
-        const textArea = document.createElement("textarea")
-        textArea.value = text
+    const plainText = formatDescriptionForSharing(htmlContent)
 
-        // Ensure it's not visible but part of the DOM
-        textArea.style.position = "fixed"
-        textArea.style.left = "-9999px"
-        textArea.style.top = "0"
-        document.body.appendChild(textArea)
-
-        textArea.focus()
-        textArea.select()
-
-        try {
-            const successful = document.execCommand('copy')
-            if (successful) {
-                Swal.fire({ icon: 'success', title: 'تم النسخ', text: 'تم نسخ الوصف', timer: 1500, showConfirmButton: false })
-            } else {
-                throw new Error('Fallback copy failed')
-            }
-        } catch (err) {
-            console.error('Fallback verify failed', err)
-            Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل النسخ' })
+    // 1. Try modern Clipboard API (Best results)
+    try {
+        if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
+            const clipboardItem = new ClipboardItem({
+                'text/html': new Blob([htmlContent], { type: 'text/html' }),
+                'text/plain': new Blob([plainText], { type: 'text/plain' })
+            })
+            await navigator.clipboard.write([clipboardItem])
+            Swal.fire({ icon: 'success', title: 'تم النسخ', text: 'تم نسخ الوصف بالتنسيق', timer: 1500, showConfirmButton: false })
+            return
         }
-
-        document.body.removeChild(textArea)
-        return
+    } catch (err) {
+        console.warn('Modern Clipboard API failed, trying fallback...', err)
     }
 
-    navigator.clipboard.writeText(text).then(() => {
-        Swal.fire({ icon: 'success', title: 'تم النسخ', text: 'تم نسخ الوصف', timer: 1500, showConfirmButton: false })
-    }).catch(() => {
+    // 2. Reliable Fallback: Selection-based Rich Text Copy
+    // This copies the actual "rendered content" to the clipboard (with formatting)
+    const hiddenDiv = document.createElement("div")
+    hiddenDiv.innerHTML = htmlContent
+    hiddenDiv.style.position = "fixed"
+    hiddenDiv.style.left = "-9999px"
+    hiddenDiv.style.top = "0"
+    document.body.appendChild(hiddenDiv)
+
+    try {
+        const range = document.createRange()
+        range.selectNodeContents(hiddenDiv)
+        const selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+
+        const successful = document.execCommand('copy')
+        selection.removeAllRanges()
+
+        if (successful) {
+            Swal.fire({ icon: 'success', title: 'تم النسخ', text: 'تم نسخ الوصف بالتنسيق', timer: 1500, showConfirmButton: false })
+        } else {
+            throw new Error('Selection copy failed')
+        }
+    } catch (err) {
+        console.error('Final copy fallback failed', err)
         Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل النسخ' })
-    })
+    } finally {
+        document.body.removeChild(hiddenDiv)
+    }
 }
 
 

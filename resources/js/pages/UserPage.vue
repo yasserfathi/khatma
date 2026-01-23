@@ -5,11 +5,11 @@
             <div class="row items-center q-gutter-x-md">
                 <q-btn round flat color="primary" icon="arrow_forward" to="/app" />
                 <div>
-                    <div class="text-h4 text-primary text-weight-bold text-islamic">المستخدمين</div>
-                    <div class="text-subtitle2 text-grey-7">إدارة مستخدمي التطبيق</div>
+                    <div class="text-h4 text-primary text-weight-bold text-islamic">المشاركين</div>
+                    <div class="text-subtitle2 text-grey-7">إدارة المشاركين</div>
                 </div>
             </div>
-            <q-btn unelevated rounded color="primary" icon="add" label="مستخدم جديد" @click="openCreateDialog"
+            <q-btn unelevated rounded color="primary" icon="add" label="مشترك جديد" @click="openCreateDialog"
                 class="shadow-3 q-px-md" />
         </div>
 
@@ -57,7 +57,7 @@
                 <template v-slot:no-data>
                     <div class="full-width row flex-center text-grey-6 q-pa-lg">
                         <q-icon name="warning" size="sm" class="q-mr-sm" />
-                        لا يوجد مستخدمين حالياً
+                        لا يوجد مشتركين حالياً
                     </div>
                 </template>
             </q-table>
@@ -69,7 +69,7 @@
                 <!-- Dialog Header -->
                 <q-card-section class="bg-primary text-white row items-center q-py-md q-px-lg">
                     <q-avatar icon="person" color="primary-8" text-color="white" size="md" class="q-mr-md" />
-                    <div class="text-h6 text-weight-bold">{{ isEditing ? 'تعديل المستخدم' : 'مستخدم جديد' }}</div>
+                    <div class="text-h6 text-weight-bold">{{ isEditing ? 'تعديل المشترك' : 'مشترك جديد' }}</div>
                     <q-space />
                     <q-btn icon="close" flat round dense v-close-popup class="text-white op-70 hover-op-100" />
                 </q-card-section>
@@ -127,7 +127,7 @@
 
                         <div class="row justify-end q-mt-xl">
                             <q-btn label="إلغاء" color="grey-7" flat v-close-popup class="q-mr-sm" />
-                            <q-btn :label="isEditing ? 'حفظ التغييرات' : 'إنشاء المستخدم'" type="submit" color="primary"
+                            <q-btn :label="isEditing ? 'حفظ التغييرات' : 'إنشاء المشترك'" type="submit" color="primary"
                                 icon="save" unelevated class="q-px-lg shadow-2" style="border-radius: 10px" />
                         </div>
                     </q-form>
@@ -178,7 +178,7 @@ const fetchUsers = async () => {
         Swal.fire({
             icon: 'error',
             title: 'فشل التحميل',
-            text: 'فشل تحميل المستخدمين'
+            text: 'فشل تحميل المشتركين'
         })
     } finally {
         loading.value = false
@@ -209,7 +209,7 @@ const saveUser = async () => {
             Swal.fire({
                 icon: 'success',
                 title: 'تم التعديل',
-                text: 'تم تعديل المستخدم بنجاح',
+                text: 'تم تعديل بيانات المشترك بنجاح',
                 timer: 1500,
                 showConfirmButton: false
             })
@@ -218,7 +218,7 @@ const saveUser = async () => {
             Swal.fire({
                 icon: 'success',
                 title: 'تم الإنشاء',
-                text: 'تم إنشاء المستخدم بنجاح',
+                text: 'تم إنشاء المشترك بنجاح',
                 timer: 1500,
                 showConfirmButton: false
             })
@@ -248,7 +248,7 @@ const saveUser = async () => {
 const confirmDelete = (user) => {
     Swal.fire({
         title: 'تأكيد الحذف',
-        text: `هل أنت متأكد من حذف المستخدم "${user.name}"؟`,
+        text: `هل أنت متأكد من حذف المشترك"${user.name}"؟`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -261,7 +261,7 @@ const confirmDelete = (user) => {
                 await axios.delete(`/api/users/${user.id}`)
                 Swal.fire(
                     'تم الحذف!',
-                    'تم حذف المستخدم بنجاح.',
+                    'تم حذف المشتركبنجاح.',
                     'success'
                 )
                 fetchUsers()

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\GroupController;
-use App\Http\Controllers\Api\KhatmaAssignmentController;
+use App\Http\Controllers\Api\TilawaKhatmaAssignmentController;
+use App\Http\Controllers\Api\ZikrKhatmaAssignmentController;
+use App\Http\Controllers\Api\ZikrGroupParticipantController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KhatmaController;
@@ -31,6 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('groups', GroupController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('khatmas', KhatmaController::class);
-    Route::apiResource('khatma-assignments', KhatmaAssignmentController::class);
+    Route::apiResource('khatma-assignments', TilawaKhatmaAssignmentController::class);
+    Route::apiResource('tilawa-khatma-assignments', TilawaKhatmaAssignmentController::class);
+    Route::apiResource('zikr-khatma-assignments', ZikrKhatmaAssignmentController::class);
+    Route::post('zikr-group-participants/bulk', [ZikrGroupParticipantController::class, 'bulkUpdate']);
+    Route::apiResource('zikr-group-participants', ZikrGroupParticipantController::class);
     Route::apiResource('group-readings', GroupReadingController::class);
 });
