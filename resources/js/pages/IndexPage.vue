@@ -121,6 +121,51 @@
       </div>
 
     </div>
+
+    <!-- Athkar Section -->
+    <div class="row q-mt-xl justify-center">
+      <div class="col-12 col-md-12">
+        <div class="text-h6 text-primary text-weight-bold q-mb-md islamic-font row items-center">
+          <q-icon name="auto_awesome" class="q-mr-sm" /> الأذكار اليومية
+        </div>
+        <div class="row q-col-gutter-md">
+          <div v-for="category in athkarCategories" :key="category.title" class="col-12 col-sm-6 col-md-3">
+            <q-card class="glass-card flex-center column q-pa-md hover-lift border-primary-1 cursor-pointer"
+              @click="openAthkar(category)">
+              <q-avatar :color="category.color" :text-color="category.textColor" :icon="category.icon" size="60px"
+                class="q-mb-sm shadow-5" />
+              <div class="text-subtitle1 text-weight-bold text-primary">{{ category.title }}</div>
+              <div class="text-caption text-grey-6">{{ category.count }} أذكار</div>
+            </q-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Athkar Dialog -->
+    <q-dialog v-model="athkarDialog" full-width full-height transition-show="slide-up" transition-hide="slide-down">
+      <q-card class="glass-card no-border-radius">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6 text-primary text-weight-bold">{{ selectedCategory?.title }}</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-separator color="primary-1" class="q-my-md" />
+
+        <q-card-section class="scroll q-pa-md">
+          <div v-for="(thikr, index) in selectedCategory?.items" :key="index" class="q-mb-lg">
+            <q-card flat bordered class="q-pa-lg rounded-borders bg-primary-1 border-primary-2">
+              <div class="text-h6 text-right islamic-font q-mb-md" style="line-height: 1.8;">{{ thikr.text }}</div>
+              <div class="row justify-between items-center">
+                <q-chip outline color="primary" label="عدد المرات" />
+                <div class="text-h5 text-weight-bolder text-primary tabular-nums">{{ thikr.repeat }}</div>
+              </div>
+            </q-card>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -137,6 +182,67 @@ const loadingVerse = ref(true)
 const latestKhatma = ref(null)
 const isPlaying = ref(false)
 const audioPlayer = ref(null)
+
+const athkarDialog = ref(false)
+const selectedCategory = ref(null)
+
+const athkarCategories = [
+  {
+    title: 'أذكار الصباح',
+    icon: 'wb_sunny',
+    color: 'orange-1',
+    textColor: 'orange-9',
+    count: 31,
+    items: [
+      { text: 'أعوذ بالله من الشيطان الرجيم (آية الكرسي)', repeat: 1 },
+      { text: 'باسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم', repeat: 3 },
+      { text: 'رضيت بالله ربا وبالإسلام دينا وبمحمد صلى الله عليه وسلم نبيا', repeat: 3 },
+      { text: 'يا حي يا قيوم برحمتك أستغيث أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين', repeat: 1 }
+    ]
+  },
+  {
+    title: 'أذكار المساء',
+    icon: 'nights_stay',
+    color: 'indigo-1',
+    textColor: 'indigo-9',
+    count: 31,
+    items: [
+      { text: 'أعوذ بالله من الشيطان الرجيم (آية الكرسي)', repeat: 1 },
+      { text: 'أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له', repeat: 1 },
+      { text: 'اللهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير', repeat: 1 },
+      { text: 'حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم', repeat: 7 }
+    ]
+  },
+  {
+    title: 'أذكار النوم',
+    icon: 'bedtime',
+    color: 'deep-purple-1',
+    textColor: 'deep-purple-9',
+    count: 15,
+    items: [
+      { text: 'باسمك ربي وضعت جنبي، وبك أرفعه، فإن أمسكت نفسي فارحمها، وإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين', repeat: 1 },
+      { text: 'اللهم قني عذابك يوم تبعث عبادك', repeat: 3 },
+      { text: 'باسمك اللهم أموت وأحيا', repeat: 1 }
+    ]
+  },
+  {
+    title: 'بعد الصلاة',
+    icon: 'mosque',
+    color: 'teal-1',
+    textColor: 'teal-9',
+    count: 10,
+    items: [
+      { text: 'أستغفر الله (ثلاثاً) .. اللهم أنت السلام ومنك السلام، تباركت يا ذا الجلال والإكرام', repeat: 1 },
+      { text: 'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير', repeat: 1 },
+      { text: 'سبحان الله (33)، الحمد لله (33)، الله أكبر (33)', repeat: 1 }
+    ]
+  }
+]
+
+const openAthkar = (category) => {
+  selectedCategory.value = category
+  athkarDialog.value = true
+}
 
 const prayerList = {
   'الفجر': { key: 'Fajr', icon: 'brightness_5' },
