@@ -1,53 +1,105 @@
 {
-  "_QBadge-7ac72906.js": {
-    "file": "assets/QBadge-7ac72906.js",
+  "_ClosePopup-3f7efd4c.js": {
+    "file": "assets/ClosePopup-3f7efd4c.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_QForm-f985544d.js": {
-    "file": "assets/QForm-f985544d.js",
+  "_QBadge-b042455d.js": {
+    "file": "assets/QBadge-b042455d.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_QLayout-4c45bd9c.js": {
-    "file": "assets/QLayout-4c45bd9c.js",
+  "_QChip-92718629.js": {
+    "file": "assets/QChip-92718629.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_QLinearProgress-5814a24c.js": {
-    "file": "assets/QLinearProgress-5814a24c.js",
+  "_QForm-78e9a40e.js": {
+    "file": "assets/QForm-78e9a40e.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_QPage-fd16ef0c.js": {
-    "file": "assets/QPage-fd16ef0c.js",
+  "_QLayout-fe24bba1.js": {
+    "file": "assets/QLayout-fe24bba1.js",
     "imports": [
       "resources/js/app.js"
+    ]
+  },
+  "_QLinearProgress-80fe61c1.js": {
+    "file": "assets/QLinearProgress-80fe61c1.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QPage-3f84e0e7.js": {
+    "file": "assets/QPage-3f84e0e7.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QSpace-d597acc7.js": {
+    "file": "assets/QSpace-d597acc7.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_QTable-8284a098.js": {
+    "file": "assets/QTable-8284a098.js",
+    "imports": [
+      "resources/js/app.js",
+      "_format-dfd5180a.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_QLinearProgress-80fe61c1.js"
+    ]
+  },
+  "_QTooltip-ce499ceb.js": {
+    "file": "assets/QTooltip-ce499ceb.js",
+    "imports": [
+      "resources/js/app.js",
+      "_position-engine-402b4c53.js"
     ]
   },
   "__plugin-vue_export-helper-c27b6911.js": {
     "file": "assets/_plugin-vue_export-helper-c27b6911.js"
   },
-  "_format-8df1824e.js": {
-    "file": "assets/format-8df1824e.js",
+  "_format-dfd5180a.js": {
+    "file": "assets/format-dfd5180a.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_sweetalert2.esm.all-656f7692.js": {
-    "file": "assets/sweetalert2.esm.all-656f7692.js",
+  "_html2canvas.esm-0550811c.js": {
+    "file": "assets/html2canvas.esm-0550811c.js",
     "imports": [
       "resources/js/app.js",
-      "_format-8df1824e.js",
-      "_QLinearProgress-5814a24c.js"
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_position-engine-402b4c53.js",
+      "_QTooltip-ce499ceb.js",
+      "_format-dfd5180a.js",
+      "_QTable-8284a098.js"
     ]
   },
-  "_use-quasar-0c9a0e78.js": {
-    "file": "assets/use-quasar-0c9a0e78.js",
+  "_position-engine-402b4c53.js": {
+    "file": "assets/position-engine-402b4c53.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_sweetalert2.esm.all-c018c2c0.js": {
+    "file": "assets/sweetalert2.esm.all-c018c2c0.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QChip-92718629.js",
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js"
+    ]
+  },
+  "_use-quasar-ad09a648.js": {
+    "file": "assets/use-quasar-ad09a648.js",
     "imports": [
       "resources/js/app.js"
     ]
@@ -130,7 +182,7 @@
     "src": "resources/css/app.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-95292eed.css",
+    "file": "assets/app-8b924134.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -155,7 +207,7 @@
       "assets/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuZtalmUiAw-1a33b99d.woff"
     ],
     "css": [
-      "assets/app-95292eed.css"
+      "assets/app-8b924134.css"
     ],
     "dynamicImports": [
       "resources/js/layouts/AuthLayout.vue",
@@ -164,10 +216,17 @@
       "resources/js/pages/IndexPage.vue",
       "resources/js/pages/GroupPage.vue",
       "resources/js/pages/UserPage.vue",
-      "resources/js/pages/KhatmaPage.vue",
+      "resources/js/pages/KhatmaTilawaPage.vue",
+      "resources/js/pages/AssignPage.vue",
+      "resources/js/pages/KhatmaZikrPage.vue",
+      "resources/js/pages/AssignZikrPage.vue",
+      "resources/js/pages/ParticipantNumbersPage.vue",
+      "resources/js/pages/UserPage.vue",
+      "resources/js/pages/GroupReadingPage.vue",
+      "resources/js/pages/ChangePasswordPage.vue",
       "resources/js/pages/ErrorNotFound.vue"
     ],
-    "file": "assets/app-d75ee512.js",
+    "file": "assets/app-0ed78742.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
@@ -176,9 +235,9 @@
     "src": "resources/js/assets/islamic_bg_v4.png"
   },
   "resources/js/layouts/AuthLayout.vue": {
-    "file": "assets/AuthLayout-fc2e2799.js",
+    "file": "assets/AuthLayout-84a5f3f1.js",
     "imports": [
-      "_QLayout-4c45bd9c.js",
+      "_QLayout-fe24bba1.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
     ],
@@ -186,18 +245,87 @@
     "src": "resources/js/layouts/AuthLayout.vue"
   },
   "resources/js/layouts/MainLayout.vue": {
-    "file": "assets/MainLayout-0dc4f5c2.js",
+    "file": "assets/MainLayout-a649d942.js",
     "imports": [
       "resources/js/app.js",
-      "_format-8df1824e.js",
-      "_QLayout-4c45bd9c.js",
-      "_use-quasar-0c9a0e78.js"
+      "_QSpace-d597acc7.js",
+      "_QTooltip-ce499ceb.js",
+      "_QLayout-fe24bba1.js",
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js",
+      "_use-quasar-ad09a648.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/layouts/MainLayout.vue"
   },
+  "resources/js/pages/AssignPage.css": {
+    "file": "assets/AssignPage-2b89d723.css",
+    "src": "resources/js/pages/AssignPage.css"
+  },
+  "resources/js/pages/AssignPage.vue": {
+    "css": [
+      "assets/AssignPage-2b89d723.css"
+    ],
+    "file": "assets/AssignPage-e4305f51.js",
+    "imports": [
+      "resources/js/app.js",
+      "_format-dfd5180a.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_QChip-92718629.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_use-quasar-ad09a648.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_position-engine-402b4c53.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/AssignPage.vue"
+  },
+  "resources/js/pages/AssignZikrPage.css": {
+    "file": "assets/AssignZikrPage-757f7a9f.css",
+    "src": "resources/js/pages/AssignZikrPage.css"
+  },
+  "resources/js/pages/AssignZikrPage.vue": {
+    "css": [
+      "assets/AssignZikrPage-757f7a9f.css"
+    ],
+    "file": "assets/AssignZikrPage-99bf1320.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QChip-92718629.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_QForm-78e9a40e.js",
+      "_QTable-8284a098.js",
+      "_QPage-3f84e0e7.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js",
+      "_QLinearProgress-80fe61c1.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/AssignZikrPage.vue"
+  },
+  "resources/js/pages/ChangePasswordPage.css": {
+    "file": "assets/ChangePasswordPage-a809d115.css",
+    "src": "resources/js/pages/ChangePasswordPage.css"
+  },
+  "resources/js/pages/ChangePasswordPage.vue": {
+    "css": [
+      "assets/ChangePasswordPage-a809d115.css"
+    ],
+    "file": "assets/ChangePasswordPage-68540a15.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_use-quasar-ad09a648.js",
+      "__plugin-vue_export-helper-c27b6911.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/ChangePasswordPage.vue"
+  },
   "resources/js/pages/ErrorNotFound.vue": {
-    "file": "assets/ErrorNotFound-0d4f37d7.js",
+    "file": "assets/ErrorNotFound-13b86408.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -205,70 +333,143 @@
     "src": "resources/js/pages/ErrorNotFound.vue"
   },
   "resources/js/pages/GroupPage.css": {
-    "file": "assets/GroupPage-839bb1a9.css",
+    "file": "assets/GroupPage-0d72a66b.css",
     "src": "resources/js/pages/GroupPage.css"
   },
   "resources/js/pages/GroupPage.vue": {
     "css": [
-      "assets/GroupPage-839bb1a9.css"
+      "assets/GroupPage-0d72a66b.css"
     ],
-    "file": "assets/GroupPage-9e581cb5.js",
+    "file": "assets/GroupPage-840df793.js",
     "imports": [
       "resources/js/app.js",
-      "_QBadge-7ac72906.js",
-      "_sweetalert2.esm.all-656f7692.js",
-      "_format-8df1824e.js",
-      "_QForm-f985544d.js",
-      "_QPage-fd16ef0c.js",
+      "_QBadge-b042455d.js",
+      "_QTable-8284a098.js",
+      "_QTooltip-ce499ceb.js",
+      "_QSpace-d597acc7.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_format-dfd5180a.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_QLinearProgress-5814a24c.js"
+      "_QLinearProgress-80fe61c1.js",
+      "_position-engine-402b4c53.js",
+      "_QChip-92718629.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/GroupPage.vue"
   },
+  "resources/js/pages/GroupReadingPage.css": {
+    "file": "assets/GroupReadingPage-3c12fea3.css",
+    "src": "resources/js/pages/GroupReadingPage.css"
+  },
+  "resources/js/pages/GroupReadingPage.vue": {
+    "css": [
+      "assets/GroupReadingPage-3c12fea3.css"
+    ],
+    "file": "assets/GroupReadingPage-73160179.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QTooltip-ce499ceb.js",
+      "_QTable-8284a098.js",
+      "_QSpace-d597acc7.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_position-engine-402b4c53.js",
+      "_format-dfd5180a.js",
+      "_QLinearProgress-80fe61c1.js",
+      "_QChip-92718629.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/GroupReadingPage.vue"
+  },
   "resources/js/pages/IndexPage.css": {
-    "file": "assets/IndexPage-1a4040d3.css",
+    "file": "assets/IndexPage-4b52c0be.css",
     "src": "resources/js/pages/IndexPage.css"
   },
   "resources/js/pages/IndexPage.vue": {
     "css": [
-      "assets/IndexPage-1a4040d3.css"
+      "assets/IndexPage-4b52c0be.css"
     ],
-    "file": "assets/IndexPage-19e0dbd0.js",
+    "file": "assets/IndexPage-9fdcc855.js",
     "imports": [
       "resources/js/app.js",
-      "_QLinearProgress-5814a24c.js",
-      "_QBadge-7ac72906.js",
-      "_QPage-fd16ef0c.js",
-      "__plugin-vue_export-helper-c27b6911.js"
+      "_QLinearProgress-80fe61c1.js",
+      "_QTooltip-ce499ceb.js",
+      "_QSpace-d597acc7.js",
+      "_QChip-92718629.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_position-engine-402b4c53.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/IndexPage.vue"
   },
-  "resources/js/pages/KhatmaPage.css": {
-    "file": "assets/KhatmaPage-1aa08413.css",
-    "src": "resources/js/pages/KhatmaPage.css"
+  "resources/js/pages/KhatmaTilawaPage.css": {
+    "file": "assets/KhatmaTilawaPage-27f3a066.css",
+    "src": "resources/js/pages/KhatmaTilawaPage.css"
   },
-  "resources/js/pages/KhatmaPage.vue": {
+  "resources/js/pages/KhatmaTilawaPage.vue": {
     "css": [
-      "assets/KhatmaPage-1aa08413.css"
+      "assets/KhatmaTilawaPage-27f3a066.css"
     ],
-    "file": "assets/KhatmaPage-4b74f34d.js",
+    "file": "assets/KhatmaTilawaPage-e20b1058.js",
     "imports": [
       "resources/js/app.js",
-      "_sweetalert2.esm.all-656f7692.js",
-      "_format-8df1824e.js",
-      "_QForm-f985544d.js",
-      "_QPage-fd16ef0c.js",
-      "_use-quasar-0c9a0e78.js",
+      "_QTable-8284a098.js",
+      "_QLinearProgress-80fe61c1.js",
+      "_QTooltip-ce499ceb.js",
+      "_QSpace-d597acc7.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_html2canvas.esm-0550811c.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
+      "_use-quasar-ad09a648.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_QLinearProgress-5814a24c.js"
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js",
+      "_QChip-92718629.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/pages/KhatmaPage.vue"
+    "src": "resources/js/pages/KhatmaTilawaPage.vue"
+  },
+  "resources/js/pages/KhatmaZikrPage.css": {
+    "file": "assets/KhatmaZikrPage-e9191d9c.css",
+    "src": "resources/js/pages/KhatmaZikrPage.css"
+  },
+  "resources/js/pages/KhatmaZikrPage.vue": {
+    "css": [
+      "assets/KhatmaZikrPage-e9191d9c.css"
+    ],
+    "file": "assets/KhatmaZikrPage-3561b8cc.js",
+    "imports": [
+      "resources/js/app.js",
+      "_QTable-8284a098.js",
+      "_QLinearProgress-80fe61c1.js",
+      "_QTooltip-ce499ceb.js",
+      "_QSpace-d597acc7.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_html2canvas.esm-0550811c.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
+      "_use-quasar-ad09a648.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js",
+      "_QChip-92718629.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/KhatmaZikrPage.vue"
   },
   "resources/js/pages/LoginPage.css": {
-    "file": "assets/LoginPage-4680b4bb.css",
+    "file": "assets/LoginPage-fba8f5dc.css",
     "src": "resources/js/pages/LoginPage.css"
   },
   "resources/js/pages/LoginPage.vue": {
@@ -276,37 +477,67 @@
       "assets/islamic_bg_v4-9e6cb946.png"
     ],
     "css": [
-      "assets/LoginPage-4680b4bb.css"
+      "assets/LoginPage-fba8f5dc.css"
     ],
-    "file": "assets/LoginPage-5f842e81.js",
+    "file": "assets/LoginPage-744574d5.js",
     "imports": [
       "resources/js/app.js",
-      "_QForm-f985544d.js",
-      "_QPage-fd16ef0c.js",
-      "_use-quasar-0c9a0e78.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_use-quasar-ad09a648.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/LoginPage.vue"
   },
+  "resources/js/pages/ParticipantNumbersPage.css": {
+    "file": "assets/ParticipantNumbersPage-bb14e54e.css",
+    "src": "resources/js/pages/ParticipantNumbersPage.css"
+  },
+  "resources/js/pages/ParticipantNumbersPage.vue": {
+    "css": [
+      "assets/ParticipantNumbersPage-bb14e54e.css"
+    ],
+    "file": "assets/ParticipantNumbersPage-01fbc5c6.js",
+    "imports": [
+      "resources/js/app.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_QSpace-d597acc7.js",
+      "_QTable-8284a098.js",
+      "_QPage-3f84e0e7.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_QChip-92718629.js",
+      "_format-dfd5180a.js",
+      "_position-engine-402b4c53.js",
+      "_QLinearProgress-80fe61c1.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/ParticipantNumbersPage.vue"
+  },
   "resources/js/pages/UserPage.css": {
-    "file": "assets/UserPage-a40c2aad.css",
+    "file": "assets/UserPage-0bcab605.css",
     "src": "resources/js/pages/UserPage.css"
   },
   "resources/js/pages/UserPage.vue": {
     "css": [
-      "assets/UserPage-a40c2aad.css"
+      "assets/UserPage-0bcab605.css"
     ],
-    "file": "assets/UserPage-738b3616.js",
+    "file": "assets/UserPage-5b62333f.js",
     "imports": [
       "resources/js/app.js",
-      "_QBadge-7ac72906.js",
-      "_sweetalert2.esm.all-656f7692.js",
-      "_format-8df1824e.js",
-      "_QForm-f985544d.js",
-      "_QPage-fd16ef0c.js",
+      "_QBadge-b042455d.js",
+      "_QTable-8284a098.js",
+      "_QTooltip-ce499ceb.js",
+      "_QSpace-d597acc7.js",
+      "_sweetalert2.esm.all-c018c2c0.js",
+      "_format-dfd5180a.js",
+      "_QForm-78e9a40e.js",
+      "_QPage-3f84e0e7.js",
+      "_ClosePopup-3f7efd4c.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_QLinearProgress-5814a24c.js"
+      "_QLinearProgress-80fe61c1.js",
+      "_position-engine-402b4c53.js",
+      "_QChip-92718629.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/UserPage.vue"
