@@ -11,8 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('khatmas', function (Blueprint $table) {
-            $table->dropColumn('people_group_no');
-            $table->foreignId('group_reading_id')->nullable()->after('khatma_no')->constrained('group_readings')->onDelete('set null');
+            if (Schema::hasColumn('khatmas', 'people_group_no')) {
+                $table->dropColumn('people_group_no');
+            }
+            if (!Schema::hasColumn('khatmas', 'group_reading_id')) {
+                $table->foreignId('group_reading_id')->nullable()->after('khatma_no')->constrained('group_readings')->onDelete('set null');
+            }
         });
     }
 
@@ -22,9 +26,13 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('khatmas', function (Blueprint $table) {
-            $table->dropForeign(['group_reading_id']);
-            $table->dropColumn('group_reading_id');
-            $table->string('people_group_no')->nullable()->after('khatma_no');
+            if (Schema::hasColumn('khatmas', 'group_reading_id')) {
+                $table->dropForeign(['group_reading_id']);
+                $table->dropColumn('group_reading_id');
+            }
+            if (!Schema::hasColumn('khatmas', 'people_group_no')) {
+                $table->string('people_group_no')->nullable()->after('khatma_no');
+            }
         });
     }
 };
