@@ -131,6 +131,7 @@ const columns = [
         sortable: true
     },
     { name: 'zikr_count', label: 'العدد', field: 'zikr_count', align: 'center', sortable: true },
+    { name: 'created_by', label: 'تم الإنشاء بواسطة', field: row => row.creator?.name || '---', align: 'center', sortable: true },
     { name: 'actions', label: 'الإجراءات', align: 'center' }
 ]
 

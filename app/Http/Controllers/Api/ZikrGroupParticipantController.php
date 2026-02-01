@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ZikrGroupParticipant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ZikrGroupParticipantController extends Controller
 {
@@ -14,7 +15,7 @@ class ZikrGroupParticipantController extends Controller
         if (!$groupId) {
             return response()->json(['message' => 'Group ID is required'], 422);
         }
-        return ZikrGroupParticipant::where('group_id', $groupId)->get();
+        return ZikrGroupParticipant::with('creator')->where('group_id', $groupId)->get();
     }
 
     public function store(Request $request)
@@ -27,7 +28,7 @@ class ZikrGroupParticipantController extends Controller
 
         $participant = ZikrGroupParticipant::updateOrCreate(
             ['group_id' => $validated['group_id'], 'user_id' => $validated['user_id']],
-            ['participant_no' => $validated['participant_no']]
+            ['participant_no' => $validated['participant_no'], 'created_by' => Auth::id()]
         );
 
         return response()->json($participant);
@@ -45,7 +46,7 @@ class ZikrGroupParticipantController extends Controller
         foreach ($validated['participants'] as $p) {
             ZikrGroupParticipant::updateOrCreate(
                 ['group_id' => $validated['group_id'], 'user_id' => $p['user_id']],
-                ['participant_no' => $p['participant_no'] ?? null]
+                ['participant_no' => $p['participant_no'] ?? null, 'created_by' => Auth::id()]
             );
         }
 

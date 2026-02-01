@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ZikrKhatmaAssignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ZikrKhatmaAssignmentController extends Controller
 {
     public function index(Request $request)
     {
         $khatmaId = $request->khatma_id;
-        $query = ZikrKhatmaAssignment::with('user');
+        $query = ZikrKhatmaAssignment::with(['user', 'creator']);
         if ($khatmaId) {
             $query->where('khatma_id', $khatmaId);
         }
@@ -26,6 +27,7 @@ class ZikrKhatmaAssignmentController extends Controller
             'zikr_count' => 'required|integer|min:0'
         ]);
 
+        $validated['created_by'] = Auth::id();
         $assignment = ZikrKhatmaAssignment::create($validated);
         return response()->json($assignment->load('user'), 201);
     }

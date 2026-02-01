@@ -1,5 +1,9 @@
 {
   "appId": "com.khatma.app",
   "appName": "Khatma",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "url": "https://yasserfathi.info/",
+    "cleartext": true
+  }
 }

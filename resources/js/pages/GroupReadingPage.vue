@@ -115,6 +115,7 @@ const columns = [
     { name: 'id', label: '#', field: 'id', sortable: true, align: 'left', style: 'width: 50px' },
     { name: 'group_no', label: 'رقم المجموعة', field: 'group_no', sortable: true, align: 'center' },
     { name: 'names', label: 'الأسماء', field: 'names', align: 'right' },
+    { name: 'created_by', label: 'تم الإنشاء بواسطة', field: row => row.creator?.name || '---', align: 'center' },
     { name: 'actions', label: 'الإجراءات', field: 'actions', align: 'center', style: 'width: 150px' }
 ]
 

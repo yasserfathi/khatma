@@ -15,7 +15,8 @@ class ZikrKhatmaAssignment extends Model
     protected $fillable = [
         'khatma_id',
         'user_id',
-        'zikr_count'
+        'zikr_count',
+        'created_by',
     ];
 
     public function khatma()
@@ -26,5 +27,10 @@ class ZikrKhatmaAssignment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
