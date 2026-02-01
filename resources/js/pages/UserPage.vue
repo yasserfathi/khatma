@@ -18,6 +18,11 @@
             <q-table :rows="users" :columns="columns" row-key="id" :loading="loading" flat :separator="'none'"
                 class="bg-transparent text-grey-9 custom-table"
                 table-header-class="text-primary text-weight-bold bg-primary-1 rounded-borders">
+                <template v-slot:body-cell-id="props">
+                    <q-td :props="props">
+                        {{ props.rowIndex + 1 }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-active="props">
                     <q-td :props="props">
                         <q-badge rounded :color="props.row.active ? 'primary' : 'grey'"

@@ -19,6 +19,12 @@
                 class="bg-transparent text-grey-9 custom-table"
                 table-header-class="text-primary text-weight-bold bg-primary-1 rounded-borders">
 
+                <template v-slot:body-cell-id="props">
+                    <q-td :props="props">
+                        {{ props.rowIndex + 1 }}
+                    </q-td>
+                </template>
+
                 <template v-slot:body-cell-names="props">
                     <q-td :props="props">
                         <div class="ellipsis-2-lines" style="max-width: 400px;">
@@ -61,7 +67,7 @@
                 <q-card-section class="bg-primary text-white row items-center q-py-md q-px-lg">
                     <q-avatar icon="menu_book" color="primary-8" text-color="white" size="md" class="q-mr-md" />
                     <div class="text-h6 text-weight-bold">{{ isEditing ? 'تعديل مجموعة القراءة' : 'مجموعة قراءة جديدة'
-                        }}</div>
+                    }}</div>
                     <q-space />
                     <q-btn icon="close" flat round dense v-close-popup class="text-white op-70 hover-op-100" />
                 </q-card-section>

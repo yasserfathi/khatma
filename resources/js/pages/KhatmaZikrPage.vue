@@ -18,6 +18,11 @@
             <q-table :rows="khatmas" :columns="columns" row-key="id" :loading="loading" flat :separator="'none'"
                 class="bg-transparent text-grey-9 custom-table"
                 table-header-class="text-primary text-weight-bold bg-primary-1 rounded-borders">
+                <template v-slot:body-cell-id="props">
+                    <q-td :props="props">
+                        {{ props.rowIndex + 1 }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-description="props">
                     <q-td :props="props">
                         <div class="text-grey-8 ellipsis" style="max-width: 200px" v-html="props.row.description"></div>
@@ -31,7 +36,7 @@
                                 color="teal" track-color="grey-3" rounded size="12px" class="shadow-1" />
                             <div class="row full-width justify-between text-caption text-grey-8">
                                 <span class="text-weight-bold">{{ props.row.progress ? props.row.progress.percentage : 0
-                                    }}% مكتمل</span>
+                                }}% مكتمل</span>
                                 <span>{{ props.row.progress ?
                                     `${props.row.progress.finished}/${props.row.progress.total}` : '0/0' }}</span>
                             </div>
