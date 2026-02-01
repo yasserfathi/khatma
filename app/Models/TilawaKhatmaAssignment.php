@@ -16,8 +16,14 @@ class TilawaKhatmaAssignment extends Model
         'khatma_id',
         'user_id',
         'parts',
-        'read'
+        'read',
+        'created_by'
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
     protected $casts = [
         'parts' => 'array',

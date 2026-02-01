@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\GroupReading;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,14 @@ class GroupReadingController extends Controller
 {
     public function index()
     {
-        return GroupReading::with('creator')->latest()->get();
+        $query = GroupReading::with('creator')->latest();
+        $user = Auth::user();
+
+        if ($user && $user->role === User::ROLE_ADMIN) {
+            $query->where('created_by', $user->id);
+        }
+
+        return $query->get();
     }
 
     public function store(Request $request)

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TilawaKhatmaAssignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class TilawaKhatmaAssignmentController extends Controller
 {
@@ -15,6 +17,12 @@ class TilawaKhatmaAssignmentController extends Controller
         if ($khatmaId) {
             $query->where('khatma_id', $khatmaId);
         }
+
+        $user = Auth::user();
+        if ($user && $user->role === User::ROLE_ADMIN) {
+            $query->where('created_by', $user->id);
+        }
+
         return $query->get();
     }
 
@@ -27,7 +35,7 @@ class TilawaKhatmaAssignmentController extends Controller
             'read' => 'boolean'
         ]);
 
-        $assignment = TilawaKhatmaAssignment::create($validated);
+        $assignment = TilawaKhatmaAssignment::create(array_merge($validated, ['created_by' => Auth::id()]));
         return response()->json($assignment->load('user'), 201);
     }
 

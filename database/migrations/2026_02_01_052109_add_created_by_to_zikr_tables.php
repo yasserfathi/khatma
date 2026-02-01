@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments'];
+        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments', 'tilawa_khatma_assignments'];
 
         foreach ($tables as $tableName) {
             if (Schema::hasTable($tableName)) {
@@ -28,7 +28,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments'];
+        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments', 'tilawa_khatma_assignments'];
 
         foreach ($tables as $tableName) {
             if (Schema::hasTable($tableName)) {

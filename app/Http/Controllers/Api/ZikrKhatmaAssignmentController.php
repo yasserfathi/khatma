@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\ZikrKhatmaAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,12 @@ class ZikrKhatmaAssignmentController extends Controller
         if ($khatmaId) {
             $query->where('khatma_id', $khatmaId);
         }
+
+        $user = Auth::user();
+        if ($user && $user->role === User::ROLE_ADMIN) {
+            $query->where('created_by', $user->id);
+        }
+
         return $query->get();
     }
 

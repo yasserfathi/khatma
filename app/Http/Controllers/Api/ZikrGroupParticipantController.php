@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\ZikrGroupParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,14 @@ class ZikrGroupParticipantController extends Controller
         if (!$groupId) {
             return response()->json(['message' => 'Group ID is required'], 422);
         }
-        return ZikrGroupParticipant::where('group_id', $groupId)->get();
+        $query = ZikrGroupParticipant::where('group_id', $groupId);
+        $user = Auth::user();
+
+        if ($user && $user->role === User::ROLE_ADMIN) {
+            $query->where('created_by', $user->id);
+        }
+
+        return $query->get();
     }
 
     public function store(Request $request)
