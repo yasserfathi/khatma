@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $tables = ['zikr_group_participants', 'zikr_khatma_assignments'];
+        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments'];
 
         foreach ($tables as $tableName) {
             if (Schema::hasTable($tableName)) {
@@ -28,7 +28,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        $tables = ['zikr_group_participants', 'zikr_khatma_assignments'];
+        $tables = ['group_readings', 'zikr_group_participants', 'zikr_khatma_assignments'];
 
         foreach ($tables as $tableName) {
             if (Schema::hasTable($tableName)) {
@@ -37,6 +37,7 @@ return new class extends Migration {
                         try {
                             $table->dropForeign(['created_by']);
                         } catch (\Exception $e) {
+                            // Foreign key might not exist or have a different name
                         }
                         $table->dropColumn('created_by');
                     }

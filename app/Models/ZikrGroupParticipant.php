@@ -16,6 +16,11 @@ class ZikrGroupParticipant extends Model
         'created_by',
     ];
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function group()
     {
         return $this->belongsTo(Group::class);
@@ -24,10 +29,5 @@ class ZikrGroupParticipant extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
     }
 }

@@ -15,7 +15,7 @@ class ZikrGroupParticipantController extends Controller
         if (!$groupId) {
             return response()->json(['message' => 'Group ID is required'], 422);
         }
-        return ZikrGroupParticipant::with('creator')->where('group_id', $groupId)->get();
+        return ZikrGroupParticipant::where('group_id', $groupId)->get();
     }
 
     public function store(Request $request)
@@ -26,10 +26,15 @@ class ZikrGroupParticipantController extends Controller
             'participant_no' => 'nullable|string',
         ]);
 
-        $participant = ZikrGroupParticipant::updateOrCreate(
-            ['group_id' => $validated['group_id'], 'user_id' => $validated['user_id']],
-            ['participant_no' => $validated['participant_no'], 'created_by' => Auth::id()]
-        );
+        $participant = ZikrGroupParticipant::where('group_id', $validated['group_id'])
+            ->where('user_id', $validated['user_id'])
+            ->first();
+
+        if ($participant) {
+            $participant->update(['participant_no' => $validated['participant_no']]);
+        } else {
+            $participant = ZikrGroupParticipant::create(array_merge($validated, ['created_by' => Auth::id()]));
+        }
 
         return response()->json($participant);
     }
@@ -44,10 +49,20 @@ class ZikrGroupParticipantController extends Controller
         ]);
 
         foreach ($validated['participants'] as $p) {
-            ZikrGroupParticipant::updateOrCreate(
-                ['group_id' => $validated['group_id'], 'user_id' => $p['user_id']],
-                ['participant_no' => $p['participant_no'] ?? null, 'created_by' => Auth::id()]
-            );
+            $participant = ZikrGroupParticipant::where('group_id', $validated['group_id'])
+                ->where('user_id', $p['user_id'])
+                ->first();
+
+            if ($participant) {
+                $participant->update(['participant_no' => $p['participant_no'] ?? null]);
+            } else {
+                ZikrGroupParticipant::create([
+                    'group_id' => $validated['group_id'],
+                    'user_id' => $p['user_id'],
+                    'participant_no' => $p['participant_no'] ?? null,
+                    'created_by' => Auth::id()
+                ]);
+            }
         }
 
         return response()->json(['message' => 'تم التحديث بنجاح']);

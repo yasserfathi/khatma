@@ -16,8 +16,13 @@ class ZikrKhatmaAssignment extends Model
         'khatma_id',
         'user_id',
         'zikr_count',
-        'created_by',
+        'created_by'
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
     public function khatma()
     {
@@ -27,10 +32,5 @@ class ZikrKhatmaAssignment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
     }
 }

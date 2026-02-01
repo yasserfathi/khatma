@@ -12,7 +12,7 @@ class ZikrKhatmaAssignmentController extends Controller
     public function index(Request $request)
     {
         $khatmaId = $request->khatma_id;
-        $query = ZikrKhatmaAssignment::with(['user', 'creator']);
+        $query = ZikrKhatmaAssignment::with('user');
         if ($khatmaId) {
             $query->where('khatma_id', $khatmaId);
         }
@@ -27,8 +27,7 @@ class ZikrKhatmaAssignmentController extends Controller
             'zikr_count' => 'required|integer|min:0'
         ]);
 
-        $validated['created_by'] = Auth::id();
-        $assignment = ZikrKhatmaAssignment::create($validated);
+        $assignment = ZikrKhatmaAssignment::create(array_merge($validated, ['created_by' => Auth::id()]));
         return response()->json($assignment->load('user'), 201);
     }
 

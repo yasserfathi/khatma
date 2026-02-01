@@ -69,8 +69,7 @@ const participants = ref([])
 const columns = [
     { name: 'name', label: 'الاسم', field: 'name', align: 'left' },
     { name: 'phone', label: 'رقم الهاتف', field: 'phone', align: 'left' },
-    { name: 'participant_no', label: 'رقم المشارك', field: 'participant_no', align: 'center' },
-    { name: 'created_by', label: 'تم بواسطة', field: 'created_by_name', align: 'center' }
+    { name: 'participant_no', label: 'رقم المشارك', field: 'participant_no', align: 'center' }
 ]
 
 const fetchData = async () => {
@@ -99,10 +98,7 @@ const fetchParticipants = async (groupId) => {
         const numbersMap = {}
         if (Array.isArray(numsRes.data)) {
             numsRes.data.forEach(n => {
-                numbersMap[n.user_id] = {
-                    no: n.participant_no,
-                    creator: n.creator?.name
-                }
+                numbersMap[n.user_id] = n.participant_no
             })
         }
 
@@ -110,8 +106,7 @@ const fetchParticipants = async (groupId) => {
             user_id: u.id,
             name: u.name,
             phone: u.phone,
-            participant_no: numbersMap[u.id]?.no || '',
-            created_by_name: numbersMap[u.id]?.creator || '---'
+            participant_no: numbersMap[u.id] || ''
         }))
     } catch (error) {
         console.error('Error fetching participants:', error)
