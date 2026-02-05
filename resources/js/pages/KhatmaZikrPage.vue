@@ -36,7 +36,7 @@
                                 color="teal" track-color="grey-3" rounded size="12px" class="shadow-1" />
                             <div class="row full-width justify-between text-caption text-grey-8">
                                 <span class="text-weight-bold">{{ props.row.progress ? props.row.progress.percentage : 0
-                                }}% مكتمل</span>
+                                    }}% مكتمل</span>
                                 <span>{{ props.row.progress ?
                                     `${props.row.progress.finished}/${props.row.progress.total}` : '0/0' }}</span>
                             </div>
@@ -514,103 +514,87 @@ const copyDescription = async (khatma) => {
 
 const shareWhatsapp = async (selectedKhatma) => {
     try {
-        Loading.show({ message: 'جاري تحضير التقرير الشهري...' })
+        Loading.show({ message: 'جاري تحضير الصورة...' })
 
-        // 1. Extract Month and Year from Hijri Date (e.g., "15 جمادى الأولى 1447")
-        const dateParts = selectedKhatma.hijri_date.split(' ')
-        if (dateParts.length < 3) {
-            throw new Error('تنسيق التاريخ الهجري غير صالح')
-        }
-        const month = dateParts[1]
-        const year = dateParts[2]
-
-        // 2. Fetch all khatmas for this group
-        const khatmasRes = await axios.get('/api/khatmas', {
-            params: { group_id: selectedKhatma.group_id, type: 'zikr' }
-        })
-
-        // 3. Filter khatmas for the same month and year
-        const monthKhatmas = khatmasRes.data.filter(k => {
-            const kParts = k.hijri_date.split(' ')
-            return kParts[1] === month && kParts[2] === year
-        }).sort((a, b) => {
-            // Sort by day (assuming format starts with day)
-            return parseInt(a.hijri_date.split(' ')[0]) - parseInt(b.hijri_date.split(' ')[0])
-        })
-
-        // 4. Fetch Participants and Codes
-        const [usersRes, codesRes] = await Promise.all([
-            axios.get('/api/users'),
+        // 1. Fetch Assignments and Participants
+        const [assignmentsRes, codesRes] = await Promise.all([
+            axios.get('/api/zikr-khatma-assignments', { params: { khatma_id: selectedKhatma.id } }),
             axios.get('/api/zikr-group-participants', { params: { group_id: selectedKhatma.group_id } })
         ])
 
-        const groupUsers = usersRes.data.filter(u => {
-            return u.group_numbers?.some(g => String(g) === String(selectedKhatma.group_id))
+        const assignments = assignmentsRes.data
+        const participantsMap = {} // userId -> { code, name }
+        codesRes.data.forEach(p => {
+            participantsMap[p.user_id] = { code: p.participant_no }
         })
 
-        const codesMap = {}
-        codesRes.data.forEach(c => codesMap[c.user_id] = c.participant_no)
+        // 2. Prepare Data List
+        // We only want assigned users or all participants? Usually those with assignments + codes.
+        // Let's list everyone who has a code and fill their assignment if exists.
 
-        // 5. Fetch Assignments for all month khatmas
-        const allAssignments = []
-        for (const k of monthKhatmas) {
-            const res = await axios.get('/api/zikr-khatma-assignments', { params: { khatma_id: k.id } })
-            allAssignments.push({ khatma: k, assignments: res.data })
-        }
+        let reportData = []
 
-        // 6. Build the UI in capture-container
-        const captureDiv = document.getElementById('capture-container')
-        if (!captureDiv) return
+        // Iterate over assignments to get counts
+        assignments.forEach(assign => {
+            if (participantsMap[assign.user_id]) {
+                reportData.push({
+                    code: participantsMap[assign.user_id].code,
+                    count: assign.zikr_count,
+                    userId: assign.user_id
+                })
+            }
+        })
 
-        // Take up to 4 weeks
-        const weeks = allAssignments.slice(0, 4)
-        while (weeks.length < 4) {
-            weeks.push({ khatma: { hijri_date: '---' }, assignments: [] })
-        }
-
-        // Sort participants by code (natural sort)
-        const sortedParticipants = groupUsers.map(u => ({
-            id: u.id,
-            name: u.name,
-            code: codesMap[u.id] || ''
-        })).sort((a, b) => {
+        // Sort by Code (numeric)
+        reportData.sort((a, b) => {
             return String(a.code).localeCompare(String(b.code), undefined, { numeric: true, sensitivity: 'base' })
         })
 
+        // 3. Build HTML for 2-column layout (Right-to-Left)
+        // We need pairs: [Item1, Item2], [Item3, Item4]
+        // But table structure visually:
+        // Col4(Count2) | Col3(Code2) | Col2(Count1) | Col1(Code1)
+
+        const rows = []
+        for (let i = 0; i < reportData.length; i += 2) {
+            rows.push({
+                right: reportData[i],
+                left: reportData[i + 1] || null // distinct from undefined
+            })
+        }
+
+        const captureDiv = document.getElementById('capture-container')
+        if (!captureDiv) return
+
         let tableHtml = `
-            <div dir="rtl" style="padding: 20px; background: white; font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;">
-                <table style="width: 100%; border-collapse: collapse; text-align: center; border: 2px solid black;">
+            <div dir="rtl" style="padding: 20px; background: #e0f2f1; font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif; width: 600px;">
+                <h3 style="text-align: center; margin: 0 0 10px 0; color: #000;">${selectedKhatma.hijri_date || 'التاريخ غير محدد'}</h3>
+                
+                <table style="width: 100%; border-collapse: collapse; text-align: center; background: transparent;">
                     <thead>
-                        <tr>
-                            <th colspan="5" style="padding: 10px; font-size: 18px; border: 2px solid black; background: #fff;">بسم الله الرحمن الرحيم</th>
-                        </tr>
-                        <tr>
-                            <th colspan="5" style="padding: 10px; font-size: 16px; border: 2px solid black; background: #fff;">${selectedKhatma.group?.name || 'مجموعة الذكر'}</th>
-                        </tr>
-                        <tr>
-                            <th style="padding: 8px; border: 2px solid black; background: #f5f5f5; width: 60px; font-weight: bold;">الكود</th>
-                            <th colspan="4" style="padding: 8px; border: 2px solid black; font-weight: bold;">التاريخ : ${month} ${year}</th>
-                        </tr>
-                        <tr>
-                            <th style="padding: 8px; border: 2px solid black; background: #f5f5f5; font-weight: bold;">#</th>
-                            ${weeks.map((w, idx) => `
-                                <th style="padding: 5px; border: 2px solid black; font-size: 13px; width: 22%; font-weight: bold;">
-                                    الأسبوع ${idx + 1 === 1 ? 'الأول' : idx + 1 === 2 ? 'الثاني' : idx + 1 === 3 ? 'الثالث' : 'الرابع'}
-                                </th>
-                            `).join('')}
+                        <tr style="background-color: #b2dfdb; border-bottom: 2px solid #000;">
+                            <th style="padding: 8px; font-size: 18px; width: 25%;">العدد</th>
+                            <th style="padding: 8px; font-size: 18px; width: 25%; border-left: 1px solid #999;">الكود</th>
+                            <th style="padding: 8px; font-size: 18px; width: 25%;">العدد</th>
+                            <th style="padding: 8px; font-size: 18px; width: 25%;">الكود</th>
                         </tr>
                     </thead>
                     <tbody>
         `
 
-        sortedParticipants.forEach(p => {
+        rows.forEach(row => {
+            const rightCode = row.right ? row.right.code : ''
+            const rightCount = row.right ? row.right.count : ''
+
+            const leftCode = row.left ? row.left.code : ''
+            const leftCount = row.left ? row.left.count : ''
+
             tableHtml += `
-                <tr>
-                    <td style="padding: 8px; border: 2px solid black; font-weight: bold; background: #fafafa;">${p.code || ''}</td>
-                    ${weeks.map(w => {
-                const assign = w.assignments.find(a => a.user_id === p.id)
-                return `<td style="padding: 8px; border: 2px solid black; height: 35px; font-size: 15px;">${assign ? assign.zikr_count : ''}</td>`
-            }).join('')}
+                <tr style="border-bottom: 1px solid #ccc; background-color: #fff;">
+                     <td style="padding: 8px; font-weight: bold; font-size: 18px; color: #d32f2f;">${leftCount}</td>
+                     <td style="padding: 8px; font-size: 18px; border-left: 1px solid #999; color: #000;">${leftCode}</td>
+                     <td style="padding: 8px; font-weight: bold; font-size: 18px; color: #d32f2f;">${rightCount}</td>
+                     <td style="padding: 8px; font-size: 18px; color: #000;">${rightCode}</td>
                 </tr>
             `
         })
@@ -623,13 +607,13 @@ const shareWhatsapp = async (selectedKhatma) => {
 
         captureDiv.innerHTML = tableHtml
 
-        // Wait for rendering
-        await new Promise(resolve => setTimeout(resolve, 300))
+        // Wait for render
+        await new Promise(resolve => setTimeout(resolve, 500))
 
         const canvas = await html2canvas(captureDiv, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#e0f2f1'
         })
 
         const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
@@ -637,22 +621,22 @@ const shareWhatsapp = async (selectedKhatma) => {
 
         if (!blob) throw new Error('فشل إنشاء الصورة')
 
-        const file = new File([blob], `zikr-summary-${month}.png`, { type: 'image/png' })
+        const file = new File([blob], `khatma-${selectedKhatma.khatma_no}.png`, { type: 'image/png' })
 
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
                 files: [file],
-                title: 'تقرير الذكر الشهري',
-                text: `تقرير الذكر لشهر ${month}`
+                title: 'توزيع ورد الذكر',
+                text: `${selectedKhatma.hijri_date}`
             })
         } else {
-            downloadImage(canvas, `zikr-summary-${month}.png`)
+            downloadImage(canvas, `khatma-${selectedKhatma.khatma_no}.png`)
         }
 
     } catch (err) {
         Loading.hide()
         console.error('Share failed', err)
-        Swal.fire({ icon: 'error', title: 'خطأ', text: err.message || 'فشل مشاركة التقرير' })
+        Swal.fire({ icon: 'error', title: 'خطأ', text: err.message || 'فشل المشاركة' })
     }
 }
 
